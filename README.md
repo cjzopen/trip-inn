@@ -1,4 +1,9 @@
 # test
+```
+npm run dev
+npm run generate
+
+```
 
 ## Project setup
 ```

@@ -1,19 +1,21 @@
-// import { useRoute } from 'vue-router';
-// import { useRuntimeConfig } from '#imports';
+// https://nuxt.com/docs/api/configuration/nuxt-config
 import tailwindcss from "@tailwindcss/vite";
-// import postcssNesting from 'postcss-nesting';
+
+
 
 const defaultTitle = 'CJ的SEO日記';
 const defaultDescription = '';
 const domainUrl = 'https://example.com';
-// const defaultcanonical = `${domainUrl}${useRoute().path}`;
 
 export default defineNuxtConfig({
-  runtimeConfig: {
-    apiSecret: '怎麼可以讓你知道呢 :P',
-    public: {
-      domainUrl: process.env.DOMAIN_URL || 'https://example.com'
-    }
+  compatibilityDate: '2024-11-01',
+  devtools: { enabled: true },
+  target: 'static',
+  css: ['@/assets/css/main.css'],
+  vite: {
+    plugins: [
+      tailwindcss(),
+    ],
   },
   app: {
     head: {
@@ -53,7 +55,7 @@ export default defineNuxtConfig({
       ],
       style: [
         // 渲染出 <style>h1{ color: red }</style>
-        {children: ':root{ --main-color:#345678; }'},
+        {children: ':root{ --main-color:#345; }'},
       ],
       noscript: [
         // 渲染出 <noscript>
@@ -61,24 +63,4 @@ export default defineNuxtConfig({
       ],
     },
   },
-
-  css: ['~/src/assets/css/main.css'],
-
-  vite: {
-    plugins: [
-      tailwindcss(),
-    ],
-  },
-  
-  // AppConfig
-  theme: {
-    
-  },
-
-  devtools: { enabled: true },
-  components: true,
-  build: {},
-  target: 'static',
-
-  compatibilityDate: '2025-02-10'
-});
+})

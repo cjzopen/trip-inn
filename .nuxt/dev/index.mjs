@@ -172,7 +172,7 @@ if (!window.__NUXT_DEVTOOLS_TIME_METRIC__) {
 window.__NUXT_DEVTOOLS_TIME_METRIC__.appInit = Date.now()
 `;
 
-const _Ah4i8GWYgL = (function(nitro) {
+const _AOz4WjtcVA = (function(nitro) {
   nitro.hooks.hook("render:html", (htmlContext) => {
     htmlContext.head.push(`<script>${script}<\/script>`);
   });
@@ -180,7 +180,7 @@ const _Ah4i8GWYgL = (function(nitro) {
 
 const rootDir = "D:/vuep/test";
 
-const appHead = {"meta":[{"name":"viewport","content":"width=device-width, initial-scale=1"},{"charset":"utf-8"},{"name":"description","content":""},{"name":"robots","content":"max-image-preview:large"},{"property":"og:title","content":"CJ的SEO日記"},{"property":"og:description","content":""},{"property":"og:image","content":"https://example.com/images/og-image.png"},{"property":"og:type","content":"website"},{"name":"twitter:card","content":"summary_large_image"},{"name":"twitter:title","content":"CJ的SEO日記"},{"name":"twitter:description","content":""},{"name":"twitter:image","content":"https://example.com/images/og-image.png"},{"name":"twitter:site","content":"@cjzopen"},{"name":"twitter:creator","content":"@cjzopen"}],"link":[{"rel":"preconnect","href":"https://fonts.gohogleapis.com"},{"rel":"preconnect","href":"https://fonts.gstatic.com","crossorigin":""},{"rel":"stylesheet","href":"https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400..700&display=swap"}],"style":[{"children":":root{ --main-color:#345678; }"}],"script":[{"src":"https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.js","tagPosition":"head"}],"noscript":[{"children":"此網頁需要支援 JavaScript 才能正確運行，請先至你的瀏覽器設定中開啟 JavaScript。"}],"htmlAttrs":{"lang":"zh-Hant-TW"},"viewport":"width=device-width, initial-scale=1","title":"CJ的SEO日記","charset":"utf-8"};
+const appHead = {"meta":[{"name":"viewport","content":"width=device-width, initial-scale=1"},{"charset":"utf-8"},{"name":"description","content":""},{"name":"robots","content":"max-image-preview:large"},{"property":"og:title","content":"CJ的SEO日記"},{"property":"og:description","content":""},{"property":"og:image","content":"https://example.com/images/og-image.png"},{"property":"og:type","content":"website"},{"name":"twitter:card","content":"summary_large_image"},{"name":"twitter:title","content":"CJ的SEO日記"},{"name":"twitter:description","content":""},{"name":"twitter:image","content":"https://example.com/images/og-image.png"},{"name":"twitter:site","content":"@cjzopen"},{"name":"twitter:creator","content":"@cjzopen"}],"link":[{"rel":"preconnect","href":"https://fonts.googleapis.com"},{"rel":"preconnect","href":"https://fonts.gstatic.com","crossorigin":""},{"rel":"stylesheet","href":"https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400..700&display=swap"}],"style":[{"children":":root{ --main-color:#345678; }"}],"script":[{"src":"https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.js","tagPosition":"head"}],"noscript":[{"children":"此網頁需要支援 JavaScript 才能正確運行，請先至你的瀏覽器設定中開啟 JavaScript。"}],"htmlAttrs":{"lang":"zh-Hant-TW"},"viewport":"width=device-width, initial-scale=1","title":"CJ的SEO日記","charset":"utf-8"};
 
 const appRootTag = "div";
 
@@ -267,7 +267,7 @@ function onConsoleLog(callback) {
 }
 
 const plugins = [
-  _Ah4i8GWYgL,
+  _AOz4WjtcVA,
 _uQNjqa152D
 ];
 
@@ -638,8 +638,13 @@ const defineAppConfig = (config) => config;
 
 const appConfig0 = defineAppConfig({
   foo: "bar",
+  domainUrl: "https://xxx.com",
   theme: {
     primaryColor: "#ababab"
+  },
+  api: {
+    scenic: "https://media.taiwan.net.tw/XMLReleaseALL_public/scenic_spot_C_f.json",
+    hotel: "https://media.taiwan.net.tw/XMLReleaseALL_public/hotel_C_f.json"
   }
 });
 

@@ -13,6 +13,6 @@ if (import.meta.hot) {
   })
 }
 
-import cfg0 from "D:/vuep/test/app.config.js"
+import cfg0 from "D:/vuep/test/app.config.ts"
 
 export default /*@__PURE__*/ defuFn(cfg0, inlineConfig)

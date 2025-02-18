@@ -1,36 +1,46 @@
 <template>
-  <div class="bg-gray-800">
+  <div>
     <Menu />
-    <div class="px-5 py-[5rem]">
-      <h1 class="text-3xl text-pink-500">About Us</h1>
-      <NuxtPage :page-key="route => route.fullPath" />
-      <ul class="flex flex-wrap gap-2 pt-4 text-sm text-sky-600 *:rounded-full *:border *:border-sky-200 *:bg-sky-50 *:px-2 *:py-0.5 dark:text-sky-300 dark:*:border-sky-500/15 dark:*:bg-sky-500/10">
-        <li v-for="(item, index) in items" :key="index">{{ item }}</li>
-      </ul>
-    </div>
+    <main>
+      <h1 class="py-[5rem] px-[2rem] bg-[#abc] text-(--main-color) text-3xl">web</h1>
+      <!-- 其他內容 -->
+    </main>
     <Footer />
   </div>
 </template>
 
-<script>
-import Menu from '~/src/components/Menu.vue'
-import Footer from '~/src/components/Footer.vue'
+<script setup>
+import { ref } from 'vue';
+// import { useRoute } from 'vue-router';
+import { useServerHead } from '#imports';
 
-export default {
-  components: {
-    Menu,
-    Footer
-  },
-  data() {
-    return {
-      items: ['Item 1', 'Item 2', 'Item 3']
-    };
-  }
-}
+import Menu from '~/components/Menu.vue'
+import Footer from '~/components/Footer.vue'
+
+const appConfig = useAppConfig();
+const domainUrl = appConfig.domainUrl;
+
+// const headTitle = ref('運用CSS的color-mix()，成為色彩調配大師');
+// const headDescription = ref('color-mix()在主題色改變或動態改變顏色時，只要改一個色碼，不再需要維護大量變數。');
+// const headRobots = ref('');
+
+useServerHead({
+  title: headTitle.value,
+  meta: [
+    { name: 'description', content: headDescription.value },
+    { property: 'og:title', content: headTitle.value },
+    { property: 'og:description', content: headDescription.value },
+    // { property: 'og:url', content: url },
+    { property: 'og:image', content: `${domainUrl}/images/og-image.png` },
+    { name: 'twitter:title', content: headTitle.value },
+    { name: 'twitter:description', content: headDescription.value },
+    { name: 'twitter:image', content: `${domainUrl}/images/og-image.png` },
+  ]
+});
 </script>
 
 <style scoped>
-h1 {
-  /* color: #2c3e50; */
+main {
+  padding: 2rem;
 }
 </style>

@@ -1,27 +1,21 @@
 <template>
   <div>
     <Menu />
-    <h1>Welcome to the Home Page</h1>
+    <main>
+      <h1 class="py-[5rem] text-sky-400 text-3xl">Welcome to Nuxt 3</h1>
+      <!-- 其他內容 -->
+    </main>
     <Footer />
   </div>
 </template>
 
-<script>
-import Menu from '~/src/components/Menu.vue'
-import Footer from '~/src/components/Footer.vue'
-
-export default {
-  // const { data } = await useAsyncData('item', () => $fetch('/api/item'))
-  // const { data } = await useFetch('/api/item')
-  components: {
-    Menu,
-    Footer
-  }
-}
+<script setup>
+import Menu from '~/components/Menu.vue'
+import Footer from '~/components/Footer.vue'
 </script>
 
 <style scoped>
-h1 {
-  color: #2c3e50;
+main {
+  padding: 2rem;
 }
 </style>

@@ -2,34 +2,68 @@
   <div>
     <Menu />
     <main>
-      <h1 class="py-[5rem] px-[2rem] bg-[#abc] text-(--main-color) text-3xl">台灣住宿資訊</h1>
+      <h1 class="py-[5rem] text-(--main-color) text-3xl">找住宿？找景點？</h1>
       <div>
-        <label for="city-select">選擇縣市：</label>
-        <select id="city-select" v-model="selectedCity" @change="updateQuery">
-          <option value="" disabled selected>選擇縣市</option>
-          <option value="">全部</option>
-          <option v-for="city in cities" :key="city" :value="city">{{ city }}</option>
-        </select>
+        <button type="button" @click="toggleView">{{ showHotels ? '用景點找住宿地點' : '用旅宿找附近的景點' }}</button>
       </div>
-      <Loading :loading="loading" />
-      <div>
-        <ul class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-3 gap-4">
-          <li v-for="hotel in displayHotels" :key="hotel.Id" class="overflow-hidden rounded-xl bg-white shadow-md max-w-[480px] lg:flex" @click="showHotelDetails(hotel)">
-            <figure class="shrink-0 lg:w-[200px] *:w-full">
-              <template v-if="hotel.Pictures.length > 0">
-                <img :src="hotel.Pictures[0]" :alt="hotel.Name" />
-              </template>
-              <template v-else>
-                <img src="https://picsum.photos/400/260" alt="default image" />
-              </template>
-            </figure>
-            <div>
-              <p>{{ hotel.Name }}</p>
-            </div>
-          </li>
-        </ul>
+      <div v-if="showHotels" id="hotel-area">
+        <h2>台灣住宿資訊</h2>
+        <div>
+          <label for="city-select">選擇縣市：</label>
+          <select id="city-select" v-model="selectedCity" @change="updateQuery">
+            <option value="" disabled selected>選擇縣市</option>
+            <option value="">全部</option>
+            <option v-for="city in cities" :key="city" :value="city">{{ city }}</option>
+          </select>
+        </div>
+        <div>
+          <ul class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-3 gap-4">
+            <li v-for="hotel in displayHotels" :key="hotel.Id" class="overflow-hidden rounded-xl bg-white shadow-md max-w-[480px] lg:flex" @click="showHotelDetails(hotel)">
+              <figure class="shrink-0 lg:w-[200px] *:w-full">
+                <template v-if="hotel.Pictures.length > 0">
+                  <img :src="hotel.Pictures[0]" :alt="hotel.Name" />
+                </template>
+                <template v-else>
+                  <img src="https://picsum.photos/400/260" alt="default image" />
+                </template>
+              </figure>
+              <div>
+                <p>{{ hotel.Name }}</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div v-else id="scenic-area">
+        <h2>台灣景點資訊</h2>
+        <div>
+          <label for="scenic-city-select">選擇縣市：</label>
+          <select id="scenic-city-select" v-model="selectedCity" @change="updateQuery">
+            <option value="" disabled selected>選擇縣市</option>
+            <option value="">全部</option>
+            <option v-for="city in cities" :key="city" :value="city">{{ city }}</option>
+          </select>
+        </div>
+        <div>
+          <ul class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-3 gap-4">
+            <li v-for="scenic in displayScenicSpots" :key="scenic.Id" class="overflow-hidden rounded-xl bg-white shadow-md max-w-[480px] lg:flex">
+              <figure class="shrink-0 lg:w-[200px] *:w-full">
+                <template v-if="scenic.Pictures.length > 0">
+                  <img :src="scenic.Pictures[0]" :alt="scenic.Name" />
+                </template>
+                <template v-else>
+                  <img src="https://picsum.photos/400/260" alt="default image" />
+                </template>
+              </figure>
+              <div>
+                <p>{{ scenic.Name }}</p>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
     </main>
+    <Loading :loading="loading" />
     <Footer />
   </div>
   <div v-if="selectedHotel" class="modal">
@@ -89,6 +123,17 @@ const nearbyScenicSpots = ref([]);
 const scenicData = ref([]);
 const distanceRange = ref(10);
 const addressPoints = ref([]);
+const showHotels = ref(true);
+const hotelIconSettings = ref({
+  iconUrl: new URL('/assets/images/taiwan-lodging/home.svg', import.meta.url).href,
+  iconSize: [27, 24],
+  iconAnchor: [14, 14]
+});
+const scenicIconSettings = ref({
+  iconUrl: new URL('/assets/images/taiwan-lodging/pin.svg', import.meta.url).href,
+  iconSize: [21, 28],
+  iconAnchor: [10, 18]
+});
 let map;
 let L;
 
@@ -109,6 +154,20 @@ const displayHotels = computed(() => {
   }
   return filterHotels.value;
 });
+
+const displayScenicSpots = computed(() => {
+  if (!selectedCity.value) {
+    return scenicData.value.slice(0, 15);
+  }
+  return scenicData.value.filter(scenic => scenic.Region === selectedCity.value);
+});
+
+function toggleView() {
+  showHotels.value = !showHotels.value;
+  if (!selectedCity.value) {
+    initialLoad.value = true;
+  }
+}
 
 function shuffleArray(array, seed) {
   let m = array.length, temp, i;
@@ -173,16 +232,8 @@ async function initializeMap(lat, lon) {
   if (map) {
     map.remove();
   }
-  const hotelIcon = L.icon({
-    iconUrl: '//40th.ares.com.tw/img/location.svg',
-    iconSize: [25, 41],
-    iconAnchor: [12, 41]
-  });
-  const scenicIcon = L.icon({
-    iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
-    iconSize: [25, 41],
-    iconAnchor: [12, 41]
-  });
+  const hotelIcon = L.icon(hotelIconSettings.value);
+  const scenicIcon = L.icon(scenicIconSettings.value);
   map = L.map('map').setView([lat, lon], 13);
   let tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     minZoom: 10,
@@ -206,19 +257,11 @@ async function updateMap() {
         map.removeLayer(layer);
       }
     });
-    const hotelIcon = L.icon({
-      iconUrl: '//40th.ares.com.tw/img/location.svg',
-      iconSize: [25, 41],
-      iconAnchor: [12, 41]
-    });
+    const hotelIcon = L.icon(hotelIconSettings.value);
     L.marker([selectedHotel.value.Py, selectedHotel.value.Px], { icon: hotelIcon }).addTo(map)
       .bindPopup(selectedHotel.value.Name)
       .openPopup();
-    const scenicIcon = L.icon({
-      iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
-      iconSize: [25, 41],
-      iconAnchor: [12, 41]
-    });
+    const scenicIcon = L.icon(scenicIconSettings.value);
     addScenicMarkers(scenicIcon);
   }
 }
@@ -241,12 +284,16 @@ onMounted(async () => {
 
     const scenicResponse = await fetch(`${appConfig.api.scenic}`);
     const scenicApiData = await scenicResponse.json();
-    scenicData.value = scenicApiData.XML_Head.Infos.Info;
+    scenicData.value = scenicApiData.XML_Head.Infos.Info.map(scenic => ({
+      ...scenic,
+      Pictures: [scenic.Picture1, scenic.Picture2, scenic.Picture3].filter(Boolean)
+    }));
 
     const todayDate = new Date().getDate();
     
     // 依日期產生亂數種子，隨機排序資料
     hotels.value = shuffleArray([...allHotels.value], todayDate);
+    scenicData.value = shuffleArray([...scenicData.value], todayDate);
     cities.value = [...new Set(allHotels.value.map(hotel => hotel.Region))];
     if (route.query.city) {
       if (cities.value.includes(route.query.city)) {
@@ -280,8 +327,8 @@ function updateQuery() {
 
 <style scoped>
 @import url('https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css');
-
 main {
+  background-color: oklch(.21 .034 264.665);
   padding: 2rem;
 }
 

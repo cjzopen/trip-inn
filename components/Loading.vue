@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, nextTick } from 'vue';
 
 const props = defineProps({
   loading: {
@@ -15,22 +15,14 @@ const props = defineProps({
   }
 });
 
-// const emit = defineEmits(['animationEnd']);
-
-onMounted(() => {
+onMounted(async () => {
+  await nextTick();
   const loadingElement = document.getElementById('loading');
   const waveElement = document.querySelector('.loading-wave');
   if (loadingElement && waveElement) {
     waveElement.classList.add('active');
-    setTimeout(() => {
-      loadingElement.classList.add('active');
-    }, 390);
-    // waveElement.addEventListener('animationend', () => {
-    //   // 通知父組件動畫結束
-    //   setTimeout(() => {
-    //     emit('animationEnd');
-    //   }, 400);
-    // });
+    await nextTick();
+    loadingElement.classList.add('active');
   }
 });
 </script>

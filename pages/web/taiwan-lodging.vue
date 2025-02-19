@@ -120,7 +120,7 @@ const cities = ref([]);
 const initialLoad = ref(true);
 const selectedHotel = ref(null);
 const nearbyScenicSpots = ref([]);
-const scenicData = ref([]);
+const Allscenics = ref([]);
 const distanceRange = ref(10);
 const addressPoints = ref([]);
 const showHotels = ref(true);
@@ -157,9 +157,9 @@ const displayHotels = computed(() => {
 
 const displayScenicSpots = computed(() => {
   if (!selectedCity.value) {
-    return scenicData.value.slice(0, 15);
+    return Allscenics.value.slice(0, 15);
   }
-  return scenicData.value.filter(scenic => scenic.Region === selectedCity.value);
+  return Allscenics.value.filter(scenic => scenic.Region === selectedCity.value);
 });
 
 function toggleView() {
@@ -204,7 +204,7 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
 
 function updateNearbyScenicSpots() {
   if (selectedHotel.value) {
-    nearbyScenicSpots.value = scenicData.value.filter(scenic => {
+    nearbyScenicSpots.value = Allscenics.value.filter(scenic => {
       const distance = calculateDistance(selectedHotel.value.Py, selectedHotel.value.Px, scenic.Py, scenic.Px);
       return distance <= distanceRange.value;
     });
@@ -283,8 +283,8 @@ onMounted(async () => {
     }));
 
     const scenicResponse = await fetch(`${appConfig.api.scenic}`);
-    const scenicApiData = await scenicResponse.json();
-    scenicData.value = scenicApiData.XML_Head.Infos.Info.map(scenic => ({
+    const scenicData = await scenicResponse.json();
+    Allscenics.value = scenicData.XML_Head.Infos.Info.map(scenic => ({
       ...scenic,
       Pictures: [scenic.Picture1, scenic.Picture2, scenic.Picture3].filter(Boolean)
     }));
@@ -293,7 +293,7 @@ onMounted(async () => {
     
     // 依日期產生亂數種子，隨機排序資料
     hotels.value = shuffleArray([...allHotels.value], todayDate);
-    scenicData.value = shuffleArray([...scenicData.value], todayDate);
+    Allscenics.value = shuffleArray([...Allscenics.value], todayDate);
     cities.value = [...new Set(allHotels.value.map(hotel => hotel.Region))];
     if (route.query.city) {
       if (cities.value.includes(route.query.city)) {

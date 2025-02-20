@@ -2,9 +2,9 @@
   <div>
     <Menu />
     <main>
-      <h1 class="py-[5rem] text-(--main-color) text-3xl">找住宿？找景點？</h1>
-      <div>
-        <button type="button" @click="toggleView">{{ showHotels ? '用景點找住宿地點' : '用旅宿找附近的景點' }}</button>
+      <h1 class="text-center py-[5rem] text-cyan-500 text-3xl">找住宿？找景點？</h1>
+      <div class="text-center pb-4">
+        <button class="bg-violet-700 text-violet-50 text-xl px-5 py-2 rounded-full" type="button" @click="toggleView">{{ showHotels ? '改用景點找住宿地點' : '改用旅宿找附近景點' }}</button>
       </div>
       <div v-if="showHotels" id="hotel-area">
         <h2>台灣住宿資訊</h2>
@@ -28,6 +28,7 @@
                 </template>
               </figure>
               <div>
+                <p>{{ hotel.Region }}</p>
                 <p>{{ hotel.Name }}</p>
               </div>
             </li>
@@ -125,17 +126,19 @@ const distanceRange = ref(10);
 const addressPoints = ref([]);
 const showHotels = ref(true);
 const hotelIconSettings = ref({
-  iconUrl: new URL('/assets/images/taiwan-lodging/home.svg', import.meta.url).href,
+  // 沒設定 alias 的話可以這樣寫；或是用 Nuxt 預設的 ~ 路徑別名
+  iconUrl: new URL('/src/assets/images/taiwan-lodging/home.svg', import.meta.url).href,
   iconSize: [27, 24],
   iconAnchor: [14, 14]
 });
 const scenicIconSettings = ref({
-  iconUrl: new URL('/assets/images/taiwan-lodging/pin.svg', import.meta.url).href,
+  iconUrl: new URL('/src/assets/images/taiwan-lodging/pin.svg', import.meta.url).href,
   iconSize: [21, 28],
   iconAnchor: [10, 18]
 });
 let map;
 let L;
+let markers;
 
 const route = useRoute();
 const router = useRouter();
@@ -229,6 +232,9 @@ async function initializeMap(lat, lon) {
   if (!L) {
     L = await import('leaflet').then(module => module.default);
   }
+  if (!markers) {
+    await import('leaflet.markercluster');
+  }
   if (map) {
     map.remove();
   }
@@ -251,6 +257,9 @@ async function updateMap() {
   if (!L) {
     L = await import('leaflet').then(module => module.default);
   }
+  if (!markers) {
+    await import('leaflet.markercluster');
+  }
   if (map) {
     map.eachLayer(layer => {
       if (layer instanceof L.Marker) {
@@ -267,10 +276,12 @@ async function updateMap() {
 }
 
 function addScenicMarkers(scenicIcon) {
+  const markerClusterGroup = L.markerClusterGroup();
   nearbyScenicSpots.value.forEach(scenic => {
-    L.marker([scenic.Py, scenic.Px], { icon: scenicIcon }).addTo(map)
-      .bindPopup(scenic.Name);
+    const marker = L.marker([scenic.Py, scenic.Px], { icon: scenicIcon }).bindPopup(scenic.Name);
+    markerClusterGroup.addLayer(marker);
   });
+  map.addLayer(markerClusterGroup);
 }
 
 onMounted(async () => {
@@ -327,6 +338,9 @@ function updateQuery() {
 
 <style scoped>
 @import url('https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.css');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.css');
+
 main {
   background-color: oklch(.21 .034 264.665);
   padding: 2rem;

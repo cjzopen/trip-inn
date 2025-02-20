@@ -15,6 +15,9 @@ export default defineNuxtConfig({
       domainUrl: process.env.DOMAIN_URL || 'https://example.com'
     }
   },
+  alias: {
+    '@': '/src/assets/',
+  },
   app: {
     head: {
       htmlAttrs: {

@@ -54,10 +54,7 @@
         "../*"
       ],
       "@": [
-        ".."
-      ],
-      "@/*": [
-        "../*"
+        "../../../..//src/assets"
       ],
       "~~": [
         ".."
@@ -150,7 +147,8 @@
     "../node_modules/@nuxt/devtools/dist/runtime",
     "../node_modules/@nuxt/telemetry/runtime",
     "../node_modules/@nuxt/telemetry/dist/runtime",
-    ".."
+    "..",
+    "../../../..//src/assets"
   ],
   "exclude": [
     "../dist",

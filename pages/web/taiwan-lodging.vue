@@ -136,6 +136,7 @@ const scenicIconSettings = ref({
   iconSize: [21, 28],
   iconAnchor: [10, 18]
 });
+let regionData;
 let map;
 let L;
 let markers;
@@ -290,6 +291,7 @@ onMounted(async () => {
     const hotelData = await hotelResponse.json();
     allHotels.value = hotelData.XML_Head.Infos.Info.map(hotel => ({
       ...hotel,
+      Region: hotel.Region === null ? hotel.Add.slice(0, 3) : hotel.Region,
       Pictures: [hotel.Picture1, hotel.Picture2, hotel.Picture3].filter(Boolean)
     }));
 
@@ -297,6 +299,7 @@ onMounted(async () => {
     const scenicData = await scenicResponse.json();
     Allscenics.value = scenicData.XML_Head.Infos.Info.map(scenic => ({
       ...scenic,
+      Region: scenic.Region === null ? scenic.Add.slice(0, 3) : scenic.Region,
       Pictures: [scenic.Picture1, scenic.Picture2, scenic.Picture3].filter(Boolean)
     }));
 

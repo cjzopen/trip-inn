@@ -6,81 +6,13 @@
       <div class="text-center pb-4">
         <button class="bg-violet-700 text-violet-50 text-xl px-5 py-2 rounded-full" type="button" @click="toggleView">{{ showHotels ? '改用景點找住宿地點' : '改用旅宿找附近景點' }}</button>
       </div>
-      <div v-if="showHotels" id="hotel-area">
-        <h2>台灣住宿資訊</h2>
-        <div>
-          <label for="city-select">選擇縣市：</label>
-          <select id="city-select" v-model="selectedCity" @change="updateQuery">
-            <option value="" disabled selected>選擇縣市</option>
-            <option value="">全部</option>
-            <option v-for="city in cities" :key="city" :value="city">{{ city }}</option>
-          </select>
-        </div>
-        <div>
-          <ul class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-3 gap-4">
-            <li v-for="hotel in displayHotels" :key="hotel.Id" class="overflow-hidden rounded-xl bg-white shadow-md max-w-[480px] lg:flex" @click="showHotelDetails(hotel)">
-              <figure class="shrink-0 lg:w-[200px] *:w-full">
-                <template v-if="hotel.Pictures.length > 0">
-                  <img :src="hotel.Pictures[0]" :alt="hotel.Name" />
-                </template>
-                <template v-else>
-                  <img src="https://picsum.photos/400/260" alt="default image" />
-                </template>
-              </figure>
-              <div>
-                <p>{{ hotel.Region }}</p>
-                <p>{{ hotel.Name }}</p>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div v-else id="scenic-area">
-        <h2>台灣景點資訊</h2>
-        <div>
-          <label for="scenic-city-select">選擇縣市：</label>
-          <select id="scenic-city-select" v-model="selectedCity" @change="updateQuery">
-            <option value="" disabled selected>選擇縣市</option>
-            <option value="">全部</option>
-            <option v-for="city in cities" :key="city" :value="city">{{ city }}</option>
-          </select>
-        </div>
-        <div>
-          <ul class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-3 gap-4">
-            <li v-for="scenic in displayScenicSpots" :key="scenic.Id" class="overflow-hidden rounded-xl bg-white shadow-md max-w-[480px] lg:flex">
-              <figure class="shrink-0 lg:w-[200px] *:w-full">
-                <template v-if="scenic.Pictures.length > 0">
-                  <img :src="scenic.Pictures[0]" :alt="scenic.Name" />
-                </template>
-                <template v-else>
-                  <img src="https://picsum.photos/400/260" alt="default image" />
-                </template>
-              </figure>
-              <div>
-                <p>{{ scenic.Name }}</p>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
+      <HotelList v-if="showHotels" :hotels="displayHotels" :cities="cities" :selectedCity="selectedCity" :updateQuery="updateQuery" :showHotelDetails="showHotelDetails" />
+      <ScenicList v-else :scenics="displayScenicSpots" :cities="cities" :selectedCity="selectedCity" :updateQuery="updateQuery" />
     </main>
     <Loading :loading="loading" />
     <Footer />
   </div>
-  <div v-if="selectedHotel" class="modal">
-    <div class="modal-content">
-      <span class="close" @click="closeModal">&times;</span>
-      <h2>{{ selectedHotel.Name }}</h2>
-      <h3>方圓{{ distanceRange }}公里內的景點：</h3>
-      <input type="range" min="5" max="20" v-model="distanceRange" @input="updateNearbyScenicSpots" />
-      <div id="map-wrapper">
-        <div id="map"></div>
-      </div>
-      <ul>
-        <li v-for="scenic in nearbyScenicSpots" :key="scenic.Id">{{ scenic.Region }}：{{ scenic.Name }}</li>
-      </ul>
-    </div>
-  </div>
+  <MapModal v-if="selectedHotel" :selectedHotel="selectedHotel" :nearbyScenicSpots="nearbyScenicSpots" :distanceRange="distanceRange" @closeModal="closeModal" @updateNearbyScenicSpots="updateNearbyScenicSpots" />
 </template>
 
 <script setup>
@@ -89,10 +21,14 @@ import { useRoute, useRouter } from 'vue-router';
 import { useServerHead } from '#imports';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/swiper-bundle.css';
+// import 'leaflet.markercluster';
 
 import Menu from '~/components/Menu.vue'
 import Footer from '~/components/Footer.vue'
 import Loading from '~/components/Loading.vue'
+import HotelList from '~/components/HotelList.vue'
+import ScenicList from '~/components/ScenicList.vue'
+import MapModal from '~/components/MapModal.vue'
 
 const appConfig = useAppConfig();
 const domainUrl = appConfig.domainUrl;
@@ -116,17 +52,16 @@ useServerHead({
 const hotels = ref([]);
 const allHotels = ref([]);
 const loading = ref(true);
+const selectedHotel = ref(null);
 const selectedCity = ref('');
 const cities = ref([]);
 const initialLoad = ref(true);
-const selectedHotel = ref(null);
 const nearbyScenicSpots = ref([]);
 const Allscenics = ref([]);
 const distanceRange = ref(10);
 const addressPoints = ref([]);
 const showHotels = ref(true);
 const hotelIconSettings = ref({
-  // 沒設定 alias 的話可以這樣寫；或是用 Nuxt 預設的 ~ 路徑別名
   iconUrl: new URL('/src/assets/images/taiwan-lodging/home.svg', import.meta.url).href,
   iconSize: [27, 24],
   iconAnchor: [14, 14]
@@ -191,6 +126,14 @@ function randomSeed(seed) {
   return x - Math.floor(x);
 }
 
+function showHotelDetails(hotel) {
+  selectedHotel.value = hotel;
+  updateNearbyScenicSpots();
+  setTimeout(() => {
+    initializeMap(hotel.Py, hotel.Px);
+  }, 0);
+}
+
 // Haversine formula
 function calculateDistance(lat1, lon1, lat2, lon2) {
   const R = 6371; // 地球半徑
@@ -204,85 +147,6 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
   // 計算角距離
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return R * c;
-}
-
-function updateNearbyScenicSpots() {
-  if (selectedHotel.value) {
-    nearbyScenicSpots.value = Allscenics.value.filter(scenic => {
-      const distance = calculateDistance(selectedHotel.value.Py, selectedHotel.value.Px, scenic.Py, scenic.Px);
-      return distance <= distanceRange.value;
-    });
-    addressPoints.value = nearbyScenicSpots.value.map(scenic => [scenic.Py, scenic.Px, { name: scenic.Name }]);
-    updateMap();
-  }
-}
-
-function showHotelDetails(hotel) {
-  selectedHotel.value = hotel;
-  updateNearbyScenicSpots();
-  setTimeout(() => {
-    initializeMap(hotel.Py, hotel.Px);
-  }, 0);
-}
-
-function closeModal() {
-  selectedHotel.value = null;
-}
-
-async function initializeMap(lat, lon) {
-  if (!L) {
-    L = await import('leaflet').then(module => module.default);
-  }
-  if (!markers) {
-    await import('leaflet.markercluster');
-  }
-  if (map) {
-    map.remove();
-  }
-  const hotelIcon = L.icon(hotelIconSettings.value);
-  const scenicIcon = L.icon(scenicIconSettings.value);
-  map = L.map('map').setView([lat, lon], 13);
-  let tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    minZoom: 10,
-    maxZoom: 18,
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-  });
-  tiles.addTo(map);
-  L.marker([lat, lon], { icon: hotelIcon }).addTo(map)
-    .bindPopup(selectedHotel.value.Name)
-    .openPopup();
-  addScenicMarkers(scenicIcon);
-}
-
-async function updateMap() {
-  if (!L) {
-    L = await import('leaflet').then(module => module.default);
-  }
-  if (!markers) {
-    await import('leaflet.markercluster');
-  }
-  if (map) {
-    map.eachLayer(layer => {
-      if (layer instanceof L.Marker) {
-        map.removeLayer(layer);
-      }
-    });
-    const hotelIcon = L.icon(hotelIconSettings.value);
-    L.marker([selectedHotel.value.Py, selectedHotel.value.Px], { icon: hotelIcon }).addTo(map)
-      .bindPopup(selectedHotel.value.Name)
-      .openPopup();
-    const scenicIcon = L.icon(scenicIconSettings.value);
-    addScenicMarkers(scenicIcon);
-  }
-}
-
-function addScenicMarkers(scenicIcon) {
-  const markerClusterGroup = L.markerClusterGroup();
-  nearbyScenicSpots.value.forEach(scenic => {
-    const marker = L.marker([scenic.Py, scenic.Px], { icon: scenicIcon }).bindPopup(scenic.Name);
-    markerClusterGroup.addLayer(marker);
-  });
-  map.addLayer(markerClusterGroup);
 }
 
 onMounted(async () => {
@@ -340,63 +204,9 @@ function updateQuery() {
 </script>
 
 <style scoped>
-@import url('https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css');
-@import url('https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.css');
-@import url('https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.css');
-
 main {
   background-color: oklch(.21 .034 264.665);
   padding: 2rem;
-}
-
-.modal {
-  display: block;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0,0,0,.4);
-}
-
-.modal-content {
-  background-color: #fefefe;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 96vw;
-  max-width: 1400px;
-  max-height: 90vh;
-  overflow-y: auto;
-}
-
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
-.close::after{
-  content: '';
-  clear: both;
-}
-#map-wrapper{
-  position: relative;
-  max-width: 800px;
-}
-#map {
-  width: 100%;
-  height: 400px;
-  max-height: 40vh;
 }
 
 </style>

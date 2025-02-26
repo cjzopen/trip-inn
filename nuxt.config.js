@@ -83,5 +83,30 @@ export default defineNuxtConfig({
   build: {},
   target: 'static',
 
-  compatibilityDate: '2025-02-10'
+  compatibilityDate: '2025-02-10',
+
+  modules: [
+    '@nuxtjs/robots',
+    '@nuxtjs/sitemap',
+    '@nuxt/content'
+  ],
+  // robots: {
+  //   /* 主要內容由 static/robots.txt 處理 */
+  //   Sitemap: `${domainUrl}/sitemap.xml`
+  // },
+  // sitemap: {
+  //   hostname: domainUrl,
+  //   gzip: true,
+  //   routes: async () => {
+  //     const { $content } = require('@nuxt/content');
+  //     const files = await $content({ deep: true }).only(['path']).fetch();
+  //     return files.map(file => file.path);
+  //   }
+  // },
+  content: {
+    // 配置 @nuxt/content 模組
+  },
+  site: {
+    url: domainUrl
+  }
 });

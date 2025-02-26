@@ -92,6 +92,42 @@
       "vue-demi": [
         "../node_modules/nuxt/dist/app/compat/vue-demi"
       ],
+      "#site-config": [
+        "../node_modules/nuxt-site-config/dist/runtime"
+      ],
+      "#site-config/*": [
+        "../node_modules/nuxt-site-config/dist/runtime/*"
+      ],
+      "#robots": [
+        "../node_modules/@nuxtjs/robots/dist/runtime"
+      ],
+      "#robots/*": [
+        "../node_modules/@nuxtjs/robots/dist/runtime/*"
+      ],
+      "#sitemap": [
+        "../node_modules/@nuxtjs/sitemap/dist/runtime"
+      ],
+      "#sitemap/*": [
+        "../node_modules/@nuxtjs/sitemap/dist/runtime/*"
+      ],
+      "#sitemap/content-v3-nitro-path": [
+        "../node_modules/@nuxt/content/dist/runtime/nitro"
+      ],
+      "#content/components": [
+        "./content/components.ts"
+      ],
+      "#content/manifest": [
+        "./content/manifest.ts"
+      ],
+      "#mdc-configs": [
+        "./mdc-configs.mjs"
+      ],
+      "#mdc-highlighter": [
+        "./mdc-highlighter.mjs"
+      ],
+      "#mdc-imports": [
+        "./mdc-imports.mjs"
+      ],
       "#vue-router": [
         "../node_modules/vue-router"
       ],
@@ -99,7 +135,7 @@
         "./imports"
       ],
       "#app-manifest": [
-        "./manifest/meta/dev"
+        "./manifest/meta/5b35193c-f458-41f7-8ac4-018b106aaa3c.json"
       ],
       "#components": [
         "./components"
@@ -143,6 +179,16 @@
     "./nuxt.d.ts",
     "../.config/nuxt.*",
     "../**/*",
+    "../node_modules/nuxt-site-config/dist/runtime",
+    "../node_modules/nuxt-site-config/dist/dist/runtime",
+    "../node_modules/@nuxtjs/robots/runtime",
+    "../node_modules/@nuxtjs/robots/dist/runtime",
+    "../node_modules/@nuxtjs/sitemap/runtime",
+    "../node_modules/@nuxtjs/sitemap/dist/runtime",
+    "../node_modules/@nuxtjs/mdc/runtime",
+    "../node_modules/@nuxtjs/mdc/dist/runtime",
+    "../node_modules/@nuxt/content/runtime",
+    "../node_modules/@nuxt/content/dist/runtime",
     "../node_modules/@nuxt/devtools/runtime",
     "../node_modules/@nuxt/devtools/dist/runtime",
     "../node_modules/@nuxt/telemetry/runtime",
@@ -154,8 +200,23 @@
     "../dist",
     "../node_modules",
     "../node_modules/nuxt/node_modules",
+    "../node_modules/nuxt-site-config/node_modules",
+    "../node_modules/@nuxtjs/robots/node_modules",
+    "../node_modules/@nuxtjs/sitemap/node_modules",
+    "../node_modules/@nuxtjs/mdc/node_modules",
+    "../node_modules/@nuxt/content/node_modules",
     "../node_modules/@nuxt/devtools/node_modules",
     "../node_modules/@nuxt/telemetry/node_modules",
+    "../node_modules/nuxt-site-config/dist/runtime/server",
+    "../node_modules/nuxt-site-config/dist/dist/runtime/server",
+    "../node_modules/@nuxtjs/robots/runtime/server",
+    "../node_modules/@nuxtjs/robots/dist/runtime/server",
+    "../node_modules/@nuxtjs/sitemap/runtime/server",
+    "../node_modules/@nuxtjs/sitemap/dist/runtime/server",
+    "../node_modules/@nuxtjs/mdc/runtime/server",
+    "../node_modules/@nuxtjs/mdc/dist/runtime/server",
+    "../node_modules/@nuxt/content/runtime/server",
+    "../node_modules/@nuxt/content/dist/runtime/server",
     "../node_modules/@nuxt/devtools/runtime/server",
     "../node_modules/@nuxt/devtools/dist/runtime/server",
     "../node_modules/@nuxt/telemetry/runtime/server",

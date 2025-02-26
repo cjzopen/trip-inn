@@ -82,22 +82,22 @@
     </div>
   </div> -->
   <div v-if="selectedItem" class="modal">
-  <div class="modal-content">
-    <span class="close" @click="closeModal">&times;</span>
-    <h2>{{ selectedItem.Name }}</h2>
-    <h3>方圓{{ distanceRange }}公里內的{{ dataType === "hotel" ? "景點" : "飯店" }}：</h3>
-    <input type="range" min="5" max="20" v-model="distanceRange" @input="updateNearbySpots" />
-    <div id="map-wrapper">
-      <div id="map"></div>
+    <div class="modal-content">
+      <span class="close" @click="closeModal">&times;</span>
+      <h2>{{ selectedItem.Name }}</h2>
+      <h3>方圓{{ distanceRange }}公里內的{{ dataType === "hotel" ? "景點" : "飯店" }}：</h3>
+      <input type="range" min="5" max="20" v-model="distanceRange" @input="updateNearbySpots" />
+      <div id="map-wrapper">
+        <div id="map"></div>
+      </div>
+      <div id="description"></div>
+      <ul>
+        <li v-for="spot in nearbySpots" :key="spot.Id">
+          {{ spot.Region }}：{{ spot.Name }}
+        </li>
+      </ul>
     </div>
-    <div id="description"></div>
-    <ul>
-      <li v-for="spot in nearbySpots" :key="spot.Id">
-        {{ spot.Region }}：{{ spot.Name }}
-      </li>
-    </ul>
   </div>
-</div>
   <Loading :loading="loading" />
 </template>
 

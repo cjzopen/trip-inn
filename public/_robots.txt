@@ -1,0 +1,10 @@
+User-agent: ChatGPT-User
+Disallow: /no/
+Allow: /
+
+User-agent: *
+Disallow: /search/?q=
+Disallow: /search?q=
+Allow: /
+
+Sitemap: https://example.com/sitemap.xml

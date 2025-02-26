@@ -1,7 +1,7 @@
 <template>
-  <div v-if="visible" class="modal">
+  <div v-if="isOpen" class="modal">
     <div class="modal-content">
-      <span class="close" @click="closeModal">&times;</span>
+      <span class="close" @click="$emit('close')">&times;</span>
       <slot></slot>
     </div>
   </div>
@@ -9,9 +9,9 @@
 
 <script setup>
 const props = defineProps({
-  visible: Boolean,
-  closeModal: Function
+  isOpen: Boolean
 });
+
 </script>
 
 <style scoped>

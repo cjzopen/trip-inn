@@ -1,5 +1,5 @@
 <template>
-  <footer>
+  <footer id="footer" class="text-(--color-orange-100)">
     <p>&copy; 2025 Your Company. All rights reserved.</p>
   </footer>
 </template>
@@ -9,13 +9,13 @@
 </script>
 
 <style scoped>
-footer {
-  background-color: #333;
-  color: white;
+#all, main{
+  min-height: 99dvh;
+}
+#footer {
+  background-color: #232323;
   text-align: center;
   padding: 1rem;
-  position: fixed;
   width: 100%;
-  bottom: 0;
 }
 </style>

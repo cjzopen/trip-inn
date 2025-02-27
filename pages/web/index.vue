@@ -11,7 +11,7 @@
 
 <script setup>
 import { ref } from 'vue';
-// import { useRoute } from 'vue-router';
+// // import { useRoute } from 'vue-router';
 import { useServerHead } from '#imports';
 
 import Menu from '~/components/Menu.vue'
@@ -20,9 +20,9 @@ import Footer from '~/components/Footer.vue'
 const appConfig = useAppConfig();
 const domainUrl = appConfig.domainUrl;
 
-// const headTitle = ref('運用CSS的color-mix()，成為色彩調配大師');
-// const headDescription = ref('color-mix()在主題色改變或動態改變顏色時，只要改一個色碼，不再需要維護大量變數。');
-// const headRobots = ref('');
+const headTitle = ref('web 資料夾');
+const headDescription = ref('hihi。');
+// // const headRobots = ref('');
 
 useServerHead({
   title: headTitle.value,

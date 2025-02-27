@@ -17,9 +17,24 @@
           </select>
         </div>
         <div>
-          <ul class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-3 gap-4">
-            <li v-for="hotel in displayHotels" :key="hotel.Id" class="overflow-hidden rounded-xl bg-white shadow-md max-w-[480px] lg:flex" @click="showDetails(hotel, 'hotel')">
-              <figure class="shrink-0 lg:w-[200px] *:w-full">
+          <ul class="grid justify-self-center grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3 gap-4">
+            <Card v-for="hotel in displayHotels" :key="hotel.Id" :item="hotel" @click="showDetails(hotel, 'hotel')">
+              <div class="title text-xl font-bold mb-2">{{ hotel.Name }}</div>
+              <p class="min-h-[48px]">{{ hotel.Add }}</p>
+              <ul>
+                <li>共有 {{ hotel.TotalNumberofRooms }} 間房間。</li>
+                <!-- 價位 -->
+                <li v-if="hotel.LowestPrice === hotel.CeilingPrice">
+                  價位：<span :class="priceClass(hotel.CeilingPrice)">{{ hotel.CeilingPrice }}</span>。
+                </li>
+                <li v-else>
+                  價位：<span :class="priceClass(hotel.LowestPrice)">{{ hotel.LowestPrice }}</span> ~ <span :class="priceClass(hotel.CeilingPrice)">{{ hotel.CeilingPrice }}</span>。
+                </li>
+                <!-- 價位 -->
+              </ul>
+            </Card>
+            <!-- <li v-for="hotel in displayHotels" :key="hotel.Id" class="card overflow-hidden rounded-xl bg-white shadow-md max-w-[480px] lg:flex" @click="showDetails(hotel, 'hotel')">
+              <figure class="figure shrink-0 w-full h-48 lg:w-[200px] lg:h-[200px] *:w-full *:h-full">
                 <template v-if="hotel.Pictures.length > 0">
                   <img :src="hotel.Pictures[0]" :alt="hotel.Name" />
                 </template>
@@ -27,11 +42,22 @@
                   <img src="https://picsum.photos/400/260" alt="default image" />
                 </template>
               </figure>
-              <div>
-                <p>{{ hotel.Region }}</p>
-                <p>{{ hotel.Name }}</p>
+              <div class="p-2">
+                <div class="title text-xl font-bold mb-2">{{ hotel.Name }}</div>
+                <p class="min-h-[48px]">{{ hotel.Add }}</p>
+                <ul>
+                  <li>共有 {{ hotel.TotalNumberofRooms }} 間房間。</li>
+                  
+                  <li v-if="hotel.LowestPrice === hotel.CeilingPrice">
+                    價位：<span :class="priceClass(hotel.CeilingPrice)">{{ hotel.CeilingPrice }}</span>。
+                  </li>
+                  <li v-else>
+                    價位：<span :class="priceClass(hotel.LowestPrice)">{{ hotel.LowestPrice }}</span> ~ <span :class="priceClass(hotel.CeilingPrice)">{{ hotel.CeilingPrice }}</span>。
+                  </li>
+                  
+                </ul>
               </div>
-            </li>
+            </li> -->
           </ul>
         </div>
       </div>
@@ -46,58 +72,48 @@
           </select>
         </div>
         <div>
-          <ul class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-3 gap-4">
-            <li v-for="scenic in displayScenics" :key="scenic.Id" class="overflow-hidden rounded-xl bg-white shadow-md max-w-[480px] lg:flex" @click="showDetails(scenic, 'scenic')">
-              <figure class="shrink-0 lg:w-[200px] *:w-full">
-                <template v-if="scenic.Pictures.length > 0">
-                  <img :src="scenic.Pictures[0]" :alt="scenic.Name" />
-                </template>
-                <template v-else>
-                  <img src="https://picsum.photos/400/260" alt="default image" />
-                </template>
-              </figure>
-              <div>
-                <p>{{ scenic.Name }}</p>
-              </div>
-            </li>
+          <ul class="grid justify-self-center grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3 gap-4">
+            <Card v-for="scenic in displayScenics" :key="scenic.Id" :item="scenic" @click="showDetails(scenic, 'scenic')">
+              <div class="title text-xl font-bold mb-2">{{ scenic.Name }}</div>
+              <p class="min-h-[48px]"></p>
+            </Card>
           </ul>
         </div>
       </div>
     </main>
     <Footer />
   </div>
-  <!-- <div v-if="selectedHotel" class="modal">
+  <!-- <div v-if="selectedItem" class="modal">
     <div class="modal-content">
       <span class="close" @click="closeModal">&times;</span>
-      <h2>{{ selectedHotel.Name }}</h2>
-      <h3>方圓{{ distanceRange }}公里內的景點：</h3>
-      <input type="range" min="5" max="20" v-model="distanceRange" @input="updateNearbyScenicSpots" />
+      <h2>{{ selectedItem.Name }}</h2>
+      <h3>方圓{{ distanceRange }}公里內的{{ dataType === "hotel" ? "景點" : "飯店" }}：</h3>
+      <input type="range" min="5" max="20" v-model="distanceRange" @input="updateNearbySpots" />
       <div id="map-wrapper">
         <div id="map"></div>
       </div>
       <div id="description"></div>
       <ul>
-        <li v-for="scenic in nearbyScenicSpots" :key="scenic.Id">{{ scenic.Region }}：{{ scenic.Name }}</li>
+        <li v-for="spot in nearbySpots" :key="spot.Id">
+          {{ spot.Region }}：{{ spot.Name }}
+        </li>
       </ul>
     </div>
   </div> -->
-  <div v-if="selectedItem" class="modal">
-  <div class="modal-content">
-    <span class="close" @click="closeModal">&times;</span>
-    <h2>{{ selectedItem.Name }}</h2>
+  <Modal :isOpen="!!selectedItem" @close="closeModal">
+    <h2>{{ selectedItem?.Name }}</h2>
     <h3>方圓{{ distanceRange }}公里內的{{ dataType === "hotel" ? "景點" : "飯店" }}：</h3>
-    <input type="range" min="5" max="20" v-model="distanceRange" @input="updateNearbySpots" />
-    <div id="map-wrapper">
-      <div id="map"></div>
-    </div>
-    <div id="description"></div>
-    <ul>
-      <li v-for="spot in nearbySpots" :key="spot.Id">
-        {{ spot.Region }}：{{ spot.Name }}
-      </li>
-    </ul>
-  </div>
-</div>
+      <input id="range-input" type="range" min="5" max="20" v-model="distanceRange" @input="updateNearbySpots" />
+      <div id="map-wrapper">
+        <div id="map"></div>
+      </div>
+      <div id="description"></div>
+      <ul>
+        <li v-for="spot in nearbySpots" :key="spot.Id">
+          {{ spot.Region }}：{{ spot.Name }}
+        </li>
+      </ul>
+  </Modal>
   <Loading :loading="loading" />
 </template>
 
@@ -111,6 +127,8 @@ import 'swiper/swiper-bundle.css';
 import Menu from '~/components/Menu.vue'
 import Footer from '~/components/Footer.vue'
 import Loading from '~/components/Loading.vue'
+import Modal from '~/components/Modal.vue'
+import Card from '~/components/lodging/Card.vue'
 
 const appConfig = useAppConfig();
 const domainUrl = appConfig.domainUrl;
@@ -227,17 +245,6 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
   return R * c;
 }
 
-// function updateNearbySpots() {
-//   if (selectedItem.value) {
-//     nearbyScenicSpots.value = allScenics.value.filter(scenic => {
-//       const distance = calculateDistance(selectedItem.value.Py, selectedItem.value.Px, scenic.Py, scenic.Px);
-//       return distance <= distanceRange.value;
-//     });
-//     addressPoints.value = nearbyScenicSpots.value.map(scenic => [scenic.Py, scenic.Px, { name: scenic.Name }]);
-//     updateMap();
-//   }
-// }
-
 function updateNearbySpots() {
   if (!selectedItem.value) return;
 
@@ -256,14 +263,6 @@ function updateNearbySpots() {
   updateMap();
 }
 
-// function showHotelDetails(hotel) {
-//   selectedHotel.value = hotel;
-//   updateNearbyScenicSpots();
-//   setTimeout(() => {
-//     initializeMap(hotel.Py, hotel.Px);
-//   }, 0);
-// }
-
 function showDetails(item, type) {
   selectedItem.value = item;
   dataType.value = type; // hotel 或 scenic
@@ -274,45 +273,9 @@ function showDetails(item, type) {
   });
 }
 
-// function updateNearbyHotelSpots() {
-//   if (selectedScenic.value) {
-//     nearbyHotelSpots.value = AllHotels.value.filter(hotel => {
-//       const distance = calculateDistance(selectedHotel.value.Py, selectedHotel.value.Px, hotel.Py, hotel.Px);
-//       return distance <= distanceRange.value;
-//     });
-//     addressPoints.value = nearbyHotelSpots.value.map(hotel => [hotel.Py, hotel.Px, { name: hotel.Name }]);
-//     updateMap();
-//   }
-// }
-
 function closeModal() {
   selectedItem.value = null;
 }
-
-// async function initializeMap(lat, lon) {
-//   if (!L) {
-//     L = await import('leaflet').then(module => module.default);
-//   }
-//   if (!markers) {
-//     await import('leaflet.markercluster');
-//   }
-//   if (map) {
-//     map.remove();
-//   }
-//   const hotelIcon = L.icon(hotelIconSettings.value);
-//   const scenicIcon = L.icon(scenicIconSettings.value);
-//   map = L.map('map').setView([lat, lon], 13);
-//   let tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-//     minZoom: 10,
-//     maxZoom: 18,
-//     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-//   });
-//   tiles.addTo(map);
-//   L.marker([lat, lon], { icon: hotelIcon }).addTo(map)
-//     .bindPopup(selectedHotel.value.Name)
-//     .openPopup();
-//   addScenicMarkers(scenicIcon);
-// }
 
 async function initializeMap(lat, lon) {
   if (!L) {
@@ -346,28 +309,6 @@ async function initializeMap(lat, lon) {
   addNearbyMarkers(nearbyIcon);
 }
 
-// async function updateMap() {
-//   if (!L) {
-//     L = await import('leaflet').then(module => module.default);
-//   }
-//   if (!markers) {
-//     await import('leaflet.markercluster');
-//   }
-//   if (map) {
-//     map.eachLayer(layer => {
-//       if (layer instanceof L.Marker) {
-//         map.removeLayer(layer);
-//       }
-//     });
-//     const hotelIcon = L.icon(hotelIconSettings.value);
-//     L.marker([selectedHotel.value.Py, selectedHotel.value.Px], { icon: hotelIcon }).addTo(map)
-//       .bindPopup(selectedHotel.value.Name)
-//       .openPopup();
-//     const scenicIcon = L.icon(scenicIconSettings.value);
-//     addScenicMarkers(scenicIcon);
-//   }
-// }
-
 async function updateMap() {
   if (!L) {
     L = await import('leaflet').then(module => module.default);
@@ -398,21 +339,6 @@ async function updateMap() {
   // 加入附近的標記
   addNearbyMarkers(nearbyIcon);
 }
-
-// function addScenicMarkers(scenicIcon) {
-//   const markerClusterGroup = L.markerClusterGroup();
-//   nearbyScenicSpots.value.forEach(scenic => {
-//     const marker = L.marker([scenic.Py, scenic.Px], { icon: scenicIcon });
-//     marker.on('click', () => {
-//       const mapElement = document.querySelector('#description');
-//       if (mapElement) {
-//         mapElement.innerHTML = `<h3>${scenic.Name}</h3><address>${scenic.Add}</address></address><p>${scenic.Toldescribe || '沒有描述'}</p>`;
-//       }
-//     });
-//     markerClusterGroup.addLayer(marker);
-//   });
-//   map.addLayer(markerClusterGroup);
-// }
 
 function addNearbyMarkers(icon) {
   if (!map || !nearbySpots.value.length) return;
@@ -487,6 +413,13 @@ watch(selectedCity, (newCity) => {
 function updateQuery() {
   router.push({ query: { city: selectedCity.value || undefined } });
 }
+
+// 旅宿價格顏色
+const priceClass = (price) => {
+  if (price < 3000) return 'text-emerald-500';
+  if (price > 9000) return 'text-pink-700';
+  return '';
+};
 </script>
 
 <style scoped>
@@ -499,46 +432,6 @@ main {
   padding: 2rem;
 }
 
-.modal {
-  display: block;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0,0,0,.4);
-}
-
-.modal-content {
-  background-color: #fefefe;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 96vw;
-  max-width: 1400px;
-  max-height: 90vh;
-  overflow-y: auto;
-}
-
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
-.close::after{
-  content: '';
-  clear: both;
-}
 #map-wrapper{
   position: relative;
   max-width: 800px;
@@ -548,5 +441,13 @@ main {
   height: 400px;
   max-height: 40vh;
 }
-
+.card .figure {
+  background-color: var(--slate-800);
+  & img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+}
 </style>

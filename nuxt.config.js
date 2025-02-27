@@ -12,12 +12,13 @@ export default defineNuxtConfig({
   runtimeConfig: {
     apiSecret: '怎麼可以讓你知道呢 :P',
     public: {
-      domainUrl: process.env.DOMAIN_URL || 'https://example.com'
+      // domainUrl: process.env.DOMAIN_URL || 'https://example.com'
+      domainUrl: 'https://example.com'
     }
   },
-  alias: {
-    '@': '/src/assets/',
-  },
+  // alias: {
+  //   '@': '/src/assets/',
+  // },
   app: {
     head: {
       htmlAttrs: {
@@ -74,13 +75,17 @@ export default defineNuxtConfig({
   },
   
   // AppConfig
-  theme: {
+  // theme: {
     
-  },
+  // },
+
+  // generate: {
+  //   routes: ['/web/']
+  // },
 
   devtools: { enabled: true },
   components: true,
-  build: {},
+  // build: {},
   target: 'static',
 
   compatibilityDate: '2025-02-10'

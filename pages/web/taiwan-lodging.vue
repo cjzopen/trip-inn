@@ -23,41 +23,9 @@
               <p class="min-h-[48px]">{{ hotel.Add }}</p>
               <ul>
                 <li>共有 {{ hotel.TotalNumberofRooms }} 間房間。</li>
-                <!-- 價位 -->
-                <li v-if="hotel.LowestPrice === hotel.CeilingPrice">
-                  價位：<span :class="priceClass(hotel.CeilingPrice)">{{ hotel.CeilingPrice }}</span>。
-                </li>
-                <li v-else>
-                  價位：<span :class="priceClass(hotel.LowestPrice)">{{ hotel.LowestPrice }}</span> ~ <span :class="priceClass(hotel.CeilingPrice)">{{ hotel.CeilingPrice }}</span>。
-                </li>
-                <!-- 價位 -->
+                <li v-html="getPriceHtml(hotel)"></li>
               </ul>
             </Card>
-            <!-- <li v-for="hotel in displayHotels" :key="hotel.Id" class="card overflow-hidden rounded-xl bg-white shadow-md max-w-[480px] lg:flex" @click="showDetails(hotel, 'hotel')">
-              <figure class="figure shrink-0 w-full h-48 lg:w-[200px] lg:h-[200px] *:w-full *:h-full">
-                <template v-if="hotel.Pictures.length > 0">
-                  <img :src="hotel.Pictures[0]" :alt="hotel.Name" />
-                </template>
-                <template v-else>
-                  <img src="https://picsum.photos/400/260" alt="default image" />
-                </template>
-              </figure>
-              <div class="p-2">
-                <div class="title text-xl font-bold mb-2">{{ hotel.Name }}</div>
-                <p class="min-h-[48px]">{{ hotel.Add }}</p>
-                <ul>
-                  <li>共有 {{ hotel.TotalNumberofRooms }} 間房間。</li>
-                  
-                  <li v-if="hotel.LowestPrice === hotel.CeilingPrice">
-                    價位：<span :class="priceClass(hotel.CeilingPrice)">{{ hotel.CeilingPrice }}</span>。
-                  </li>
-                  <li v-else>
-                    價位：<span :class="priceClass(hotel.LowestPrice)">{{ hotel.LowestPrice }}</span> ~ <span :class="priceClass(hotel.CeilingPrice)">{{ hotel.CeilingPrice }}</span>。
-                  </li>
-                  
-                </ul>
-              </div>
-            </li> -->
           </ul>
         </div>
       </div>
@@ -83,42 +51,27 @@
     </main>
     <Footer />
   </div>
-  <!-- <div v-if="selectedItem" class="modal">
-    <div class="modal-content">
-      <span class="close" @click="closeModal">&times;</span>
-      <h2>{{ selectedItem.Name }}</h2>
-      <h3>方圓{{ distanceRange }}公里內的{{ dataType === "hotel" ? "景點" : "飯店" }}：</h3>
-      <input type="range" min="5" max="20" v-model="distanceRange" @input="updateNearbySpots" />
-      <div id="map-wrapper">
-        <div id="map"></div>
-      </div>
-      <div id="description"></div>
-      <ul>
-        <li v-for="spot in nearbySpots" :key="spot.Id">
-          {{ spot.Region }}：{{ spot.Name }}
-        </li>
-      </ul>
-    </div>
-  </div> -->
   <Modal :isOpen="!!selectedItem" @close="closeModal">
     <h2>{{ selectedItem?.Name }}</h2>
-    <h3>方圓{{ distanceRange }}公里內的{{ dataType === "hotel" ? "景點" : "飯店" }}：</h3>
-      <input id="range-input" type="range" min="5" max="20" v-model="distanceRange" @input="updateNearbySpots" />
-      <div id="map-wrapper">
-        <div id="map"></div>
-      </div>
-      <div id="description"></div>
-      <ul>
-        <li v-for="spot in nearbySpots" :key="spot.Id">
-          {{ spot.Region }}：{{ spot.Name }}
-        </li>
-      </ul>
+    <p>方圓{{ distanceRange }}公里內的{{ dataType === "hotel" ? "景點" : "飯店" }}：</p>
+    <input id="range-input" type="range" min="5" max="20" v-model="distanceRange" @input="updateNearbySpots" />
+    <div id="map-wrapper">
+      <div id="map"></div>
+    </div>
+    <div id="description">
+      <component :is="isHotel ? 'DetailHotel' : 'DetailScenic'" :item="selectedItem" />
+    </div>
+    <ul>
+      <li v-for="spot in nearbySpots" :key="spot.Id">
+        {{ spot.Region }}：{{ spot.Name }}
+      </li>
+    </ul>
   </Modal>
   <Loading :loading="loading" />
 </template>
 
 <script setup>
-import { ref, onMounted, computed, watch, nextTick } from 'vue';
+import { ref, onMounted, computed, watch, createApp, nextTick } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useServerHead } from '#imports';
 import { Swiper, SwiperSlide } from 'swiper/vue';
@@ -129,6 +82,8 @@ import Footer from '~/components/Footer.vue'
 import Loading from '~/components/Loading.vue'
 import Modal from '~/components/Modal.vue'
 import Card from '~/components/lodging/Card.vue'
+import DetailHotel from '~/components/lodging/DetailHotel.vue'
+import DetailScenic from '~/components/lodging/DetailScenic.vue'
 
 const appConfig = useAppConfig();
 const domainUrl = appConfig.domainUrl;
@@ -165,6 +120,8 @@ const nearbySpots = ref([]);
 const distanceRange = ref(10);
 const addressPoints = ref([]);
 const showHotels = ref(true);
+const isHotel = ref(true);
+// const mapClickTarget = ref([]);
 const hotelIconSettings = ref({
   iconUrl: new URL('/src/assets/images/taiwan-lodging/home.svg', import.meta.url).href,
   iconSize: [27, 24],
@@ -306,7 +263,7 @@ async function initializeMap(lat, lon) {
     .openPopup();
 
   // 加入附近的相反類型標記（飯店找景點 or 景點找飯店）
-  addNearbyMarkers(nearbyIcon);
+  addNearbyMarkers(nearbyIcon, isHotel);
 }
 
 async function updateMap() {
@@ -337,10 +294,10 @@ async function updateMap() {
     .openPopup();
 
   // 加入附近的標記
-  addNearbyMarkers(nearbyIcon);
+  addNearbyMarkers(nearbyIcon, isHotel);
 }
 
-function addNearbyMarkers(icon) {
+function addNearbyMarkers(icon, isHotel) {
   if (!map || !nearbySpots.value.length) return;
 
   const markerClusterGroup = L.markerClusterGroup();
@@ -349,9 +306,15 @@ function addNearbyMarkers(icon) {
     const marker = L.marker([spot.Py, spot.Px], { icon });
 
     marker.on('click', () => {
-      const mapElement = document.querySelector('#description');
-      if (mapElement) {
-        mapElement.innerHTML = `<h3>${spot.Name}</h3><address>${spot.Add}</address><p>${spot.Toldescribe || '沒有描述'}</p>`;
+      const mapTarget = document.querySelector('#description');
+      if (mapTarget) {
+        // 插入 DetailHotel.vue 或 DetailScenic.vue
+        // mapClickTarget.value = spot;
+        // console.log(mapClickTarget.value);
+        const ComponentInDscription = isHotel ? DetailScenic : DetailHotel;
+        const caeateDetail = createApp(ComponentInDscription, { item: spot });
+          // console.log(selectedItem);
+        caeateDetail.mount(mapTarget);
       }
     });
 
@@ -419,6 +382,21 @@ const priceClass = (price) => {
   if (price < 3000) return 'text-emerald-500';
   if (price > 9000) return 'text-pink-700';
   return '';
+};
+
+// 獲取價格 HTML
+// const getPriceHtml = (hotel) => {
+//   if (hotel.LowestPrice === hotel.CeilingPrice) {
+//     return `價位：<span class="${priceClass(hotel.CeilingPrice)}">${hotel.CeilingPrice}</span>。`;
+//   }
+//   return `價位：<span class="${priceClass(hotel.LowestPrice)}">${hotel.LowestPrice}</span> ~ <span class="${priceClass(hotel.CeilingPrice)}">${hotel.CeilingPrice}</span>。`;
+// };
+const getPriceHtml = (hotel) => {
+  const { LowestPrice, CeilingPrice } = hotel;
+  const priceText = LowestPrice === CeilingPrice
+    ? `<span class="${priceClass(CeilingPrice)}">${CeilingPrice}</span>`
+    : `<span class="${priceClass(LowestPrice)}">${LowestPrice}</span> ~ <span class="${priceClass(CeilingPrice)}">${CeilingPrice}</span>`;
+  return `價位：${priceText}。`;
 };
 </script>
 

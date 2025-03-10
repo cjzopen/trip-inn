@@ -56,7 +56,7 @@ export default defineNuxtConfig({
           // tagPosition: 'head'
         },
         {
-          src: 'https://www.googletagmanager.com/gtag/js?id=G-DJDQTXG7GS', // 替換為你的 GA4 ID
+          src: 'https://www.googletagmanager.com/gtag/js?id=G-DJDQTXG7GS',
           async: true
         },
         {
@@ -89,6 +89,14 @@ export default defineNuxtConfig({
     plugins: [
       tailwindcss(),
     ],
+    resolve: {
+      alias: {
+        'entities/lib/esm/decode.js': 'entities/lib/decode.js'
+      }
+    },
+    optimizeDeps: {
+      include: ['estree-walker']
+    }
   },
   
   // AppConfig
@@ -98,7 +106,9 @@ export default defineNuxtConfig({
 
   devtools: { enabled: true },
   components: true,
-  build: {},
+  build: {
+    transpile: ['vue', 'vue-router', 'nuxt', 'estree-walker']
+  },
   target: 'static',
 
   compatibilityDate: '2025-02-10'

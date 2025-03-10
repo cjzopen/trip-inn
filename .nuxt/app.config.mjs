@@ -1,5 +1,5 @@
 
-import { updateAppConfig } from '#app/config'
+import { _replaceAppConfig } from '#app/config'
 import { defuFn } from 'defu'
 
 const inlineConfig = {
@@ -9,10 +9,10 @@ const inlineConfig = {
 // Vite - webpack is handled directly in #app/config
 if (import.meta.hot) {
   import.meta.hot.accept((newModule) => {
-    updateAppConfig(newModule.default)
+    _replaceAppConfig(newModule.default)
   })
 }
 
-import cfg0 from "D:/vuep/test/app.config.ts"
+import cfg0 from "D:/vuep/github-page-source-code/app.config.ts"
 
 export default /*@__PURE__*/ defuFn(cfg0, inlineConfig)

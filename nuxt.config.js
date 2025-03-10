@@ -1,13 +1,8 @@
-// import { useRoute } from 'vue-router';
-// import { useRuntimeConfig } from '#imports';
 import tailwindcss from "@tailwindcss/vite";
-// import postcssNesting from 'postcss-nesting';
-
 
 const defaultTitle = 'CJ的SEO日記';
 const defaultDescription = '';
-const domainUrl = 'https://cjzopen.github.io';
-// const defaultcanonical = `${domainUrl}${useRoute().path}`;
+const domainUrl = 'https://cjzopen.github.io'; // 替換為你的 GitHub Pages 網址
 
 export default defineNuxtConfig({
   runtimeConfig: {
@@ -21,6 +16,7 @@ export default defineNuxtConfig({
   },
   app: {
     baseURL: '/',
+    buildAssetsDir: '/_nuxt/',
     head: {
       htmlAttrs: {
         lang: 'zh-Hant-TW'
@@ -33,6 +29,7 @@ export default defineNuxtConfig({
         { name: 'robots', content: 'max-image-preview:large' },
         { property: 'og:title', content: defaultTitle },
         { property: 'og:description', content: defaultDescription },
+// { property: 'og:url', content: url },
         // { property: 'og:url', content: url },
         { property: 'og:image', content: `${domainUrl}/images/og-image.png` },
         { property: 'og:type', content: 'website' },
@@ -42,7 +39,7 @@ export default defineNuxtConfig({
         { name: 'twitter:image', content: `${domainUrl}/images/og-image.png` },
         { name: 'twitter:site', content: '@cjzopen' },
         { name: 'twitter:creator', content: '@cjzopen' },
-      ],
+     ],
       link: [
         // { rel: 'canonical', href: defaultcanonical },
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -56,7 +53,7 @@ export default defineNuxtConfig({
           // tagPosition: 'head'
         },
         {
-          src: 'https://www.googletagmanager.com/gtag/js?id=G-DJDQTXG7GS', // 替換為你的 GA4 ID
+          src: 'https://www.googletagmanager.com/gtag/js?id=G-DJDQTXG7GS',
           async: true
         },
         {
@@ -66,9 +63,7 @@ export default defineNuxtConfig({
             gtag('js', new Date());
             gtag('config', 'G-DJDQTXG7GS');
           `,
-          // type: 'text/javascript',
-          // charset: 'utf-8'
-        }
+        },
       ],
       style: [
         // 渲染出 <style>h1{ color: red }</style>
@@ -91,15 +86,20 @@ export default defineNuxtConfig({
     ],
   },
   
-  // AppConfig
-  theme: {
-    
+  build: {
+    filenames: {
+      app: ({ isDev }) => isDev ? '[name].js' : '[name].js',
+      chunk: ({ isDev }) => isDev ? '[name].js' : '[name].js',
+      css: ({ isDev }) => isDev ? '[name].css' : '[name].css',
+      img: ({ isDev }) => isDev ? '[name].[ext]' : '[name].[ext]',
+      font: ({ isDev }) => isDev ? '[name].[ext]' : '[name].[ext]',
+      video: ({ isDev }) => isDev ? '[name].[ext]' : '[name].[ext]'
+    }
   },
 
   devtools: { enabled: true },
   components: true,
-  build: {},
-  target: 'static',
+    target: 'static',
 
   compatibilityDate: '2025-02-10'
 });

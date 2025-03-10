@@ -23,6 +23,5 @@ logs
 .env.*
 !.env.example
 
-# cache
-.nuxt
-.cache
+# github actions
+.github

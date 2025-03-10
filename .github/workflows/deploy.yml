@@ -30,4 +30,4 @@ jobs:
         github_token: ${{ secrets.NUXT }}
         publish_dir: ./dist
         destination_repo: cjzopen/cjzopen.github.io
-        destination_branch: gh-pages
+        destination_branch: main

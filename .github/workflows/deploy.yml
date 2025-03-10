@@ -27,7 +27,7 @@ jobs:
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
-        github_token: ${{ secrets.nuxt }}
+        github_token: ${{ secrets.NUXT }}
         publish_dir: ./dist
         destination_repo: cjzopen/cjzopen.github.io
         destination_branch: gh-pages

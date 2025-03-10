@@ -3,6 +3,7 @@
 import tailwindcss from "@tailwindcss/vite";
 // import postcssNesting from 'postcss-nesting';
 
+
 const defaultTitle = 'CJ的SEO日記';
 const defaultDescription = '';
 const domainUrl = 'https://example.com';
@@ -12,13 +13,12 @@ export default defineNuxtConfig({
   runtimeConfig: {
     apiSecret: '怎麼可以讓你知道呢 :P',
     public: {
-      // domainUrl: process.env.DOMAIN_URL || 'https://example.com'
-      domainUrl: 'https://example.com'
+      domainUrl: process.env.DOMAIN_URL || 'https://example.com'
     }
   },
-  // alias: {
-  //   '@': '/src/assets/',
-  // },
+  alias: {
+    '@': '/src/assets/',
+  },
   app: {
     head: {
       htmlAttrs: {
@@ -50,14 +50,30 @@ export default defineNuxtConfig({
       ],
       script: [
         {
-          src: 'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.js',
+          // src: 'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.js',
           // 用於調整 script 標籤渲染的位置，值可以是 'head' | 'bodyClose' | 'bodyOpen'
-          tagPosition: 'head'
+          // tagPosition: 'head'
         },
+        {
+          src: 'https://www.googletagmanager.com/gtag/js?id=G-DJDQTXG7GS', // 替換為你的 GA4 ID
+          async: true
+        },
+        {
+          children: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-DJDQTXG7GS');
+          `,
+          // type: 'text/javascript',
+          // charset: 'utf-8'
+        }
       ],
       style: [
         // 渲染出 <style>h1{ color: red }</style>
-        {children: ':root{ --main-color:#345678; }'},
+        {children: `
+          :root{ --main-color:#345678;}
+          `},
       ],
       noscript: [
         // 渲染出 <noscript>
@@ -75,17 +91,13 @@ export default defineNuxtConfig({
   },
   
   // AppConfig
-  // theme: {
+  theme: {
     
-  // },
-
-  // generate: {
-  //   routes: ['/web/']
-  // },
+  },
 
   devtools: { enabled: true },
   components: true,
-  // build: {},
+  build: {},
   target: 'static',
 
   compatibilityDate: '2025-02-10'

@@ -3,6 +3,7 @@ import type { DefineComponent, SlotsType } from 'vue'
 type IslandComponent<T extends DefineComponent> = T & DefineComponent<{}, {refresh: () => Promise<void>}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, SlotsType<{ fallback: { error: unknown } }>>
 interface _GlobalComponents {
       'AiIntro': typeof import("../components/AiIntro.vue")['default']
+    'Breadcrumb': typeof import("../components/Breadcrumb.vue")['default']
     'Footer': typeof import("../components/Footer.vue")['default']
     'Loading': typeof import("../components/Loading.vue")['default']
     'Menu': typeof import("../components/Menu.vue")['default']
@@ -34,6 +35,7 @@ interface _GlobalComponents {
     'NuxtIsland': typeof import("../node_modules/nuxt/dist/app/components/nuxt-island")['default']
     'NuxtRouteAnnouncer': IslandComponent<typeof import("../node_modules/nuxt/dist/app/components/server-placeholder")['default']>
       'LazyAiIntro': typeof import("../components/AiIntro.vue")['default']
+    'LazyBreadcrumb': typeof import("../components/Breadcrumb.vue")['default']
     'LazyFooter': typeof import("../components/Footer.vue")['default']
     'LazyLoading': typeof import("../components/Loading.vue")['default']
     'LazyMenu': typeof import("../components/Menu.vue")['default']
@@ -71,6 +73,7 @@ declare module 'vue' {
 }
 
 export const AiIntro: typeof import("../components/AiIntro.vue")['default']
+export const Breadcrumb: typeof import("../components/Breadcrumb.vue")['default']
 export const Footer: typeof import("../components/Footer.vue")['default']
 export const Loading: typeof import("../components/Loading.vue")['default']
 export const Menu: typeof import("../components/Menu.vue")['default']
@@ -102,6 +105,7 @@ export const Body: typeof import("../node_modules/nuxt/dist/head/runtime/compone
 export const NuxtIsland: typeof import("../node_modules/nuxt/dist/app/components/nuxt-island")['default']
 export const NuxtRouteAnnouncer: IslandComponent<typeof import("../node_modules/nuxt/dist/app/components/server-placeholder")['default']>
 export const LazyAiIntro: typeof import("../components/AiIntro.vue")['default']
+export const LazyBreadcrumb: typeof import("../components/Breadcrumb.vue")['default']
 export const LazyFooter: typeof import("../components/Footer.vue")['default']
 export const LazyLoading: typeof import("../components/Loading.vue")['default']
 export const LazyMenu: typeof import("../components/Menu.vue")['default']

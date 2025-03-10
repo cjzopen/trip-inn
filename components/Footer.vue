@@ -1,6 +1,6 @@
 <template>
   <footer id="footer" class="text-(--color-orange-100)">
-    <p>&copy; 2025 Your Company. All rights reserved.</p>
+    <p>&copy; 2025 cjzopen. All rights reserved.</p>
   </footer>
 </template>
 
@@ -9,9 +9,6 @@
 </script>
 
 <style scoped>
-#all, main{
-  min-height: 99dvh;
-}
 #footer {
   background-color: #232323;
   text-align: center;

@@ -3,11 +3,12 @@
     <Menu />
     <Breadcrumb :items="breadcrumb" />
     <main>
-      <h1 class="pb-4 px-3 text-(--main-color) text-3xl">web 相關</h1>
+      <h1 class="pb-4 px-3 text-(--main-color) text-3xl">blog 預定遷移處</h1>
+      <a class="text-blue-800 hover:text-blue-600 p-4" href="https://aoimonotw.blogspot.com">Blogger</a>
       <div class="px-3">
         <ul>
           <li>
-            <nuxt-link to="/web/taiwan-lodging">景點找旅宿 x 旅宿找景點（未完成）</nuxt-link>
+            <!-- <nuxt-link to="/web/taiwan-lodging">景點找旅宿 x 旅宿找景點</nuxt-link> -->
           </li>
         </ul>
       </div>
@@ -47,7 +48,7 @@ useServerHead({
 });
 
 const breadcrumb = ref([
-  { name: 'web 相關', to: '/web/' }
+  { name: '文章', to: '/blog/' }
 ]);
 </script>
 

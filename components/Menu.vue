@@ -2,6 +2,7 @@
   <nav>
     <ul>
       <li><a href="/">Home</a></li>
+      <li><a href="/blog/">blog</a></li>
       <li><a href="/web/">web</a></li>
       <!-- <li><a href="/contact">Contact</a></li> -->
     </ul>

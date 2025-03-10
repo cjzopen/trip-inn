@@ -1,1 +1,13 @@
 @import "tailwindcss";
+body{
+  --default-font-family: "Noto Sans TC", "Microsoft JhengHei";
+}
+img{
+  display: inline;
+}
+h1, h2, h3, h4, h5, h6{
+  font-weight: bold;
+}
+#all, main{
+  min-height: calc(100dvh - (60px + 40px));
+}

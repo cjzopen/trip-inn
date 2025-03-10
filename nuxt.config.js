@@ -6,20 +6,21 @@ import tailwindcss from "@tailwindcss/vite";
 
 const defaultTitle = 'CJ的SEO日記';
 const defaultDescription = '';
-const domainUrl = 'https://example.com';
+const domainUrl = 'https://cjzopen.github.io';
 // const defaultcanonical = `${domainUrl}${useRoute().path}`;
 
 export default defineNuxtConfig({
   runtimeConfig: {
     apiSecret: '怎麼可以讓你知道呢 :P',
     public: {
-      domainUrl: process.env.DOMAIN_URL || 'https://example.com'
+      domainUrl: process.env.DOMAIN_URL || 'https://cjzopen.github.io'
     }
   },
   alias: {
     '@': '/src/assets/',
   },
   app: {
+    baseURL: '/',
     head: {
       htmlAttrs: {
         lang: 'zh-Hant-TW'

@@ -1,6 +1,6 @@
 export default defineAppConfig({
   foo: 'bar',
-  domainUrl: 'https://xxx.com',
+  domainUrl: 'https://cjzopen.github.io',
   theme: {
     primaryColor: '#ababab',
   },

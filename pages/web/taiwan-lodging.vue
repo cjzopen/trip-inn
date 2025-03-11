@@ -76,6 +76,9 @@ import { useRoute, useRouter } from 'vue-router';
 import { useServerHead } from '#imports';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/swiper-bundle.css';
+import '~/assets/lib/leaflet/leaflet.1.9.4.css';
+import '~/assets/lib/leaflet/markercluster.1.5.3.css';
+import '~/assets/lib/leaflet/markercluster.default.1.5.3.css';
 
 import Menu from '~/components/Menu.vue'
 import Footer from '~/components/Footer.vue'
@@ -403,9 +406,9 @@ const getPriceHtml = (hotel) => {
 </script>
 
 <style scoped>
-@import url('https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css');
+/* @import url('https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.css');
-@import url('https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.css');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.css'); */
 
 main {
   background-color: oklch(.21 .034 264.665);

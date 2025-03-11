@@ -52,10 +52,7 @@ export default defineNuxtConfig({
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: ''},
         { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400..700&display=swap'},
-        {
-          rel: 'stylesheet',
-          href: '/_nuxt/style.css?v=' + ver
-        },
+        
         // {
         //   rel: 'icon',
         //   type: 'image/x-icon',
@@ -94,10 +91,6 @@ export default defineNuxtConfig({
           // 用於調整 script 標籤渲染的位置，值可以是 'head' | 'bodyClose' | 'bodyOpen'
           // tagPosition: 'head'
         // },
-        {
-          src: '/_nuxt/app.js?v=' + ver,
-          defer: true
-        },
         {
           src: 'https://www.googletagmanager.com/gtag/js?id=G-DJDQTXG7GS',
           async: true

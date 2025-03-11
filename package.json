@@ -20,5 +20,8 @@
     "tailwindcss": "^4.0.6",
     "vue": "latest",
     "vue-router": "latest"
+  },
+  "devDependencies": {
+    "@nuxtjs/sitemap": "^7.2.7"
   }
 }

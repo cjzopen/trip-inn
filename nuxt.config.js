@@ -176,6 +176,7 @@ export default defineNuxtConfig({
   components: true,
   build: {
     transpile: ['vue', 'vue-router', 'nuxt', 'estree-walker'],
+    extractCSS: false, // 禁止抽取 CSS，所有 CSS 直接內嵌
     filenames: {
       app: () => 'app.js',
       chunk: () => '[name].js', // 避免 chunk 有 hash
@@ -197,6 +198,27 @@ export default defineNuxtConfig({
     //   video: ({ isDev }) => isDev ? '[path][name].[ext]' : 'videos/[name].[contenthash:7].[ext]'
     // }
   },
+  modules: ['@nuxtjs/sitemap'],
+  site: {
+    url: domainUrl
+  },
+  sitemap: {
+    xsl: false,
+    gzip: true,
+    defaults: {
+      changefreq: 'monthly',
+    }
+  },
+  // sitemap: {
+  //   site: {
+  //     url: domainUrl
+  //   },
+  //   gzip: true,
+  //   routes: async () => {
+  //     const { getRoutes } = await import('#imports');
+  //     return getRoutes().map(route => route.path);
+  //   }
+  // },
   target: 'static',
 
   compatibilityDate: '2025-02-10'

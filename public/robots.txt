@@ -8,4 +8,4 @@ User-agent: *
 Disallow: /search?q=
 Allow: /
 
-Sitemap: https://example.com/sitemap.xml
+Sitemap: https://cjzopen.github.io/sitemap.xml

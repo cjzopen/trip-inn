@@ -125,6 +125,7 @@ export default defineNuxtConfig({
 
   vite: {
     build: {
+      // cssCodeSplit: false,
       rollupOptions: {
         output: {
           assetFileNames: '[name][extname]', // 圖片、影片、字體名稱不變
@@ -176,13 +177,13 @@ export default defineNuxtConfig({
     
   },
 
-  components: true,
+  components: false,
   // experimental: {
   //   inlineSSRStyles: true
   // },
   build: {
     transpile: ['vue', 'vue-router', 'nuxt', 'estree-walker'],
-    // extractCSS: false,
+    extractCSS: false,
     filenames: {
       app: () => 'app.js',
       chunk: () => '[name].js', // 避免 chunk 有 hash

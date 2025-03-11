@@ -31,6 +31,9 @@ const props = defineProps({
 </script>
 
 <style scoped>
+:root{
+  --breadcrumb-color: #333;
+}
 .breadcrumb {
   display: block;
   margin-bottom: 0;
@@ -38,20 +41,20 @@ const props = defineProps({
   font-size: .875rem;
   white-space: nowrap;
   overflow-x: auto;
-}
-.breadcrumb > ol {
-  margin-bottom: 0;
-  padding: 0;
+  & > ol {
+    margin-bottom: 0;
+    padding: 0;
+  }
 }
 .breadcrumb-item {
   display: inline-block;
-}
-.breadcrumb-item::after {
-  content: ">";
-  margin: 0 0.5rem;
-}
-.breadcrumb-item:last-child::after {
-  content: "";
-  margin: 0;
+  &::after{
+    content: ">";
+    margin: 0 0.5rem;
+  }
+  &:last-child::after{
+    content: "";
+    margin: 0;
+  }
 }
 </style>

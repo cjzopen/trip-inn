@@ -4,11 +4,9 @@
   </footer>
 </template>
 
-<script setup>
-// 這裡可以加入任何需要的腳本
-</script>
+<script setup></script>
 
-<style scoped>
+<style>
 #footer {
   background-color: #232323;
   text-align: center;

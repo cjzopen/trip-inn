@@ -1,5 +1,5 @@
 <template>
-  <nav>
+  <nav id="nav">
     <ul>
       <li><a href="/">Home</a></li>
       <li><a href="/blog/">blog</a></li>
@@ -13,19 +13,19 @@
 // 這裡可以加入任何需要的腳本
 </script>
 
-<style scoped>
-nav {
+<style>
+#nav {
   background-color: #333;
   color: white;
   padding: 1rem;
-}
-ul {
-  list-style: none;
-  display: flex;
-  gap: 1rem;
-}
-a {
-  color: white;
-  text-decoration: none;
+  & ul {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+  }
+  & a {
+    color: white;
+    text-decoration: none;
+  }
 }
 </style>

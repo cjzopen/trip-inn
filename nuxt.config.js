@@ -121,6 +121,8 @@ export default defineNuxtConfig({
 
   css: ['~/src/assets/css/main.css'],
 
+  devtools: { enabled: true },
+
   vite: {
     build: {
       rollupOptions: {
@@ -141,42 +143,46 @@ export default defineNuxtConfig({
       include: ['estree-walker']
     }
   },
-  hooks: {
-    'nitro:build:done': async (nitro) => {
-      const fs = await import('fs');
-      const path = await import('path');
-      const version = new Date().getTime();
+  // hooks: {
+  //   'nitro:build:done': async (nitro) => {
+  //     const fs = await import('fs');
+  //     const path = await import('path');
 
-      // 取得 dist 目錄
-      const distPath = nitro.options.output.publicDir;
+  //     const distPath = nitro.options.output.publicDir;
+  //     const htmlFiles = fs.readdirSync(distPath).filter(file => file.endsWith('.html'));
 
-      // 找出所有 HTML 檔案
-      const htmlFiles = fs.readdirSync(distPath).filter(file => file.endsWith('.html'));
+  //     htmlFiles.forEach(file => {
+  //       const filePath = path.join(distPath, file);
+  //       let content = fs.readFileSync(filePath, 'utf8');
 
-      // 逐一修改 HTML，為 JS 和 CSS 加上 `?v=xxx`
-      htmlFiles.forEach(file => {
-        const filePath = path.join(distPath, file);
-        let content = fs.readFileSync(filePath, 'utf8');
+  //       // 修改正則表達式，只匹配實際存在的 CSS 檔案
+  //       content = content.replace(/\/_nuxt\/([a-zA-Z0-9-_]+)\.css/g, (match, filename) => {
+  //         const cssFilePath = path.join(distPath, '_nuxt', `${filename}.css`);
+  //         if (fs.existsSync(cssFilePath)) {
+  //           return `/_nuxt/${filename}.css?v=${ver}`;
+  //         }
+  //         return match; // 如果檔案不存在，則不修改
+  //       });
 
-        content = content
-          .replace(/\/_nuxt\/(.*?\.css)/g, `/_nuxt/$1?v=${version}`)
-          .replace(/\/_nuxt\/(.*?\.js)/g, `/_nuxt/$1?v=${version}`);
+  //       content = content.replace(/\/_nuxt\/(.*?\.js)/g, `/_nuxt/$1?v=${ver}`);
 
-        fs.writeFileSync(filePath, content, 'utf8');
-      });
-    }
-  },
+  //       fs.writeFileSync(filePath, content, 'utf8');
+  //     });
+  //   }
+  // },
   
   // AppConfig
   theme: {
     
   },
 
-  devtools: { enabled: true },
   components: true,
+  // experimental: {
+  //   inlineSSRStyles: true
+  // },
   build: {
     transpile: ['vue', 'vue-router', 'nuxt', 'estree-walker'],
-    extractCSS: false, // 禁止抽取 CSS，所有 CSS 直接內嵌
+    // extractCSS: false,
     filenames: {
       app: () => 'app.js',
       chunk: () => '[name].js', // 避免 chunk 有 hash

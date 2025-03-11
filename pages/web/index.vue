@@ -7,6 +7,9 @@
       <div class="px-3">
         <ul>
           <li>
+            <a href="https://cjzopen.github.io/anime/season/">新番表</a>
+          </li>
+          <li>
             <nuxt-link to="/web/taiwan-lodging">景點找旅宿 x 旅宿找景點（未完成）</nuxt-link>
           </li>
         </ul>

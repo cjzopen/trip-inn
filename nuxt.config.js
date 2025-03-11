@@ -7,6 +7,7 @@ import tailwindcss from "@tailwindcss/vite";
 const defaultTitle = 'CJ的SEO日記';
 const defaultDescription = '';
 const domainUrl = 'https://cjzopen.github.io';
+const ver = '01';
 // const defaultcanonical = `${domainUrl}${useRoute().path}`;
 
 export default defineNuxtConfig({
@@ -16,8 +17,11 @@ export default defineNuxtConfig({
       domainUrl: process.env.DOMAIN_URL || 'https://cjzopen.github.io'
     }
   },
-  alias: {
-    '@': '/src/assets/',
+  // alias: {
+  //   '@': '/src/assets/',
+  // },
+  generate: {
+    fallback: '404.html',
   },
   app: {
     baseURL: '/',
@@ -48,12 +52,51 @@ export default defineNuxtConfig({
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: ''},
         { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400..700&display=swap'},
+        {
+          rel: 'stylesheet',
+          href: '/_nuxt/style.css?v=' + ver
+        },
+        // {
+        //   rel: 'icon',
+        //   type: 'image/x-icon',
+        //   href: '/favicon.ico'
+        // },
+        // {
+        //   rel: 'icon',
+        //   type: 'image/png',
+        //   sizes: '32x32',
+        //   href: '/favicon-32x32.png'
+        // },
+        // {
+        //   rel: 'icon',
+        //   type: 'image/png',
+        //   sizes: '16x16',
+        //   href: '/favicon-16x16.png'
+        // },
+        // {
+        //   rel: 'apple-touch-icon',
+        //   sizes: '180x180',
+        //   href: '/apple-touch-icon.png'
+        // },
+        // {
+        //   rel: 'mask-icon',
+        //   href: '/safari-pinned-tab.svg',
+        //   color: '#5bbad5'
+        // },
+        // {
+        //   rel: 'manifest',
+        //   href: '/site.webmanifest'
+        // },
       ],
       script: [
-        {
+        // {
           // src: 'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.js',
           // 用於調整 script 標籤渲染的位置，值可以是 'head' | 'bodyClose' | 'bodyOpen'
           // tagPosition: 'head'
+        // },
+        {
+          src: '/_nuxt/app.js?v=' + ver,
+          defer: true
         },
         {
           src: 'https://www.googletagmanager.com/gtag/js?id=G-DJDQTXG7GS',
@@ -86,6 +129,13 @@ export default defineNuxtConfig({
   css: ['~/src/assets/css/main.css'],
 
   vite: {
+    build: {
+      rollupOptions: {
+        output: {
+          assetFileNames: '[name][extname]', // 圖片、影片、字體名稱不變
+        }
+      }
+    },
     plugins: [
       tailwindcss(),
     ],
@@ -98,6 +148,31 @@ export default defineNuxtConfig({
       include: ['estree-walker']
     }
   },
+  hooks: {
+    'nitro:build:done': async (nitro) => {
+      const fs = await import('fs');
+      const path = await import('path');
+      const version = new Date().getTime();
+
+      // 取得 dist 目錄
+      const distPath = nitro.options.output.publicDir;
+
+      // 找出所有 HTML 檔案
+      const htmlFiles = fs.readdirSync(distPath).filter(file => file.endsWith('.html'));
+
+      // 逐一修改 HTML，為 JS 和 CSS 加上 `?v=xxx`
+      htmlFiles.forEach(file => {
+        const filePath = path.join(distPath, file);
+        let content = fs.readFileSync(filePath, 'utf8');
+
+        content = content
+          .replace(/\/_nuxt\/(.*?\.css)/g, `/_nuxt/$1?v=${version}`)
+          .replace(/\/_nuxt\/(.*?\.js)/g, `/_nuxt/$1?v=${version}`);
+
+        fs.writeFileSync(filePath, content, 'utf8');
+      });
+    }
+  },
   
   // AppConfig
   theme: {
@@ -107,7 +182,27 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   components: true,
   build: {
-    transpile: ['vue', 'vue-router', 'nuxt', 'estree-walker']
+    transpile: ['vue', 'vue-router', 'nuxt', 'estree-walker'],
+    filenames: {
+      app: () => 'app.js',
+      chunk: () => '[name].js', // 避免 chunk 有 hash
+      css: () => '[name].css', // 避免 CSS 有 hash
+    },
+    rollupOptions: {
+      output: {
+        assetFileNames: '[name][extname]', // 靜態資源不加 hash
+        chunkFileNames: '[name].js', // 避免 chunk 有 hash
+        entryFileNames: '[name].js',
+      }
+    }
+    // filenames: {
+    //   app: ({ isDev }) => isDev ? '[name].js' : '[name].[contenthash].js',
+    //   chunk: ({ isDev }) => isDev ? '[name].js' : '[name].[contenthash].js',
+    //   css: ({ isDev }) => isDev ? '[name].css' : '[name].[contenthash].css',
+    //   img: ({ isDev }) => isDev ? '[path][name].[ext]' : 'img/[name].[contenthash:7].[ext]',
+    //   font: ({ isDev }) => isDev ? '[path][name].[ext]' : 'fonts/[name].[contenthash:7].[ext]',
+    //   video: ({ isDev }) => isDev ? '[path][name].[ext]' : 'videos/[name].[contenthash:7].[ext]'
+    // }
   },
   target: 'static',
 

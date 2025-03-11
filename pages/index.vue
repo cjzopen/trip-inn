@@ -6,7 +6,7 @@
         <h1 class="text-center py-[2rem] text-sky-400 text-5xl">CJ 的記事本</h1>
       </div>
       <div class="text-center px-3">
-        <img class="inline rounded-sm" width="512" height="512" loading="lazy" src="@/images/fixing.webp" alt="維護中">
+        <img class="inline rounded-sm" width="512" height="512" loading="lazy" src="/images/fixing.webp" alt="維護中">
         <p class="mt-3">這裡是 CJ 的記事本，目前正在重新裝修中。</p>
         <address>2012cjz@gmail.com</address>
       </div>

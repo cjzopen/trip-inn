@@ -16,7 +16,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '23'
+        node-version: 'lts/*'
 
     - name: Install dependencies
       run: npm install
@@ -27,7 +27,7 @@ jobs:
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
-        github_token: ${{ secrets.NUXT }}
+        github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         publish_dir: ./dist
-        destination_repo: cjzopen/cjzopen.github.io
-        destination_branch: main
+        external_repository: cjzopen/cjzopen.github.io
+        publish_branch: main

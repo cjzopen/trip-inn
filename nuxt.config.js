@@ -4,7 +4,7 @@ import tailwindcss from "@tailwindcss/vite";
 // import postcssNesting from 'postcss-nesting';
 
 
-const defaultTitle = 'CJ的SEO日記';
+const defaultTitle = 'CJ的記事本';
 const defaultDescription = '';
 const domainUrl = 'https://cjzopen.github.io';
 const ver = '01';
@@ -125,7 +125,7 @@ export default defineNuxtConfig({
 
   vite: {
     build: {
-      // cssCodeSplit: false,
+      cssCodeSplit: false,
       rollupOptions: {
         output: {
           assetFileNames: '[name][extname]', // 圖片、影片、字體名稱不變
@@ -145,29 +145,14 @@ export default defineNuxtConfig({
     }
   },
   // hooks: {
-  //   'nitro:build:done': async (nitro) => {
-  //     const fs = await import('fs');
-  //     const path = await import('path');
-
-  //     const distPath = nitro.options.output.publicDir;
-  //     const htmlFiles = fs.readdirSync(distPath).filter(file => file.endsWith('.html'));
-
-  //     htmlFiles.forEach(file => {
-  //       const filePath = path.join(distPath, file);
-  //       let content = fs.readFileSync(filePath, 'utf8');
-
-  //       // 修改正則表達式，只匹配實際存在的 CSS 檔案
-  //       content = content.replace(/\/_nuxt\/([a-zA-Z0-9-_]+)\.css/g, (match, filename) => {
-  //         const cssFilePath = path.join(distPath, '_nuxt', `${filename}.css`);
-  //         if (fs.existsSync(cssFilePath)) {
-  //           return `/_nuxt/${filename}.css?v=${ver}`;
-  //         }
-  //         return match; // 如果檔案不存在，則不修改
-  //       });
-
-  //       content = content.replace(/\/_nuxt\/(.*?\.js)/g, `/_nuxt/$1?v=${ver}`);
-
-  //       fs.writeFileSync(filePath, content, 'utf8');
+  //   'prerender:done'() {
+  //     console.log('💡 強制移除所有 HTML 中錯誤的 CSS 連結');
+  //     const files = glob.sync('dist/**/*.html');
+  //     files.forEach(file => {
+  //       let content = fs.readFileSync(file, 'utf8');
+  //       const fixedContent = content.replace(/<link rel="stylesheet" href="\/_nuxt\/style\.css" crossorigin>/g, '');
+  //       fs.writeFileSync(file, fixedContent);
+  //       console.log(`✅ 修正 ${file}`);
   //     });
   //   }
   // },
@@ -178,12 +163,12 @@ export default defineNuxtConfig({
   },
 
   components: false,
-  // experimental: {
-  //   inlineSSRStyles: true
-  // },
+  experimental: {
+    inlineSSRStyles: true
+  },
   build: {
     transpile: ['vue', 'vue-router', 'nuxt', 'estree-walker'],
-    extractCSS: false,
+    extractCSS: false, // 啟用 CSS 提取
     filenames: {
       app: () => 'app.js',
       chunk: () => '[name].js', // 避免 chunk 有 hash
@@ -196,14 +181,6 @@ export default defineNuxtConfig({
         entryFileNames: '[name].js',
       }
     }
-    // filenames: {
-    //   app: ({ isDev }) => isDev ? '[name].js' : '[name].[contenthash].js',
-    //   chunk: ({ isDev }) => isDev ? '[name].js' : '[name].[contenthash].js',
-    //   css: ({ isDev }) => isDev ? '[name].css' : '[name].[contenthash].css',
-    //   img: ({ isDev }) => isDev ? '[path][name].[ext]' : 'img/[name].[contenthash:7].[ext]',
-    //   font: ({ isDev }) => isDev ? '[path][name].[ext]' : 'fonts/[name].[contenthash:7].[ext]',
-    //   video: ({ isDev }) => isDev ? '[path][name].[ext]' : 'videos/[name].[contenthash:7].[ext]'
-    // }
   },
   modules: ['@nuxtjs/sitemap'],
   site: {

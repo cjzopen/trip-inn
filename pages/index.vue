@@ -18,8 +18,8 @@
 
 <script setup>
 import { onMounted } from 'vue';
-import Menu from '~/components/Menu.vue'
-import Footer from '~/components/Footer.vue'
+import Menu from '~/components/Menu.vue';
+import Footer from '~/components/Footer.vue';
 
 const colors = ['#583C87', '#E45A84', '#FFACAC'];
 const particleSize = 20;

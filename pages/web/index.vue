@@ -24,9 +24,9 @@ import { ref } from 'vue';
 // // import { useRoute } from 'vue-router';
 import { useServerHead } from '#imports';
 
-import Menu from '~/components/Menu.vue'
-import Footer from '~/components/Footer.vue'
-import Breadcrumb from '~/components/Breadcrumb.vue'
+import Menu from '~/components/Menu.vue';
+import Footer from '~/components/Footer.vue';
+import Breadcrumb from '~/components/Breadcrumb.vue';
 
 const appConfig = useAppConfig();
 const domainUrl = appConfig.domainUrl;

@@ -36,7 +36,7 @@ const props = defineProps({
 
 .modal-wrapper {
   position: relative;
-  background-color: #fefefe;
+  background-color: #fafaf1;
   margin: 2rem auto;
   /* border: 1px solid #888; */
   border-radius: 6px;

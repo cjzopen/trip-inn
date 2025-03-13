@@ -30,7 +30,7 @@ const props = defineProps({
 });
 </script>
 
-<style scoped>
+<style>
 :root{
   --breadcrumb-color: #333;
 }

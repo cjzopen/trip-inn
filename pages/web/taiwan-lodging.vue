@@ -2,19 +2,20 @@
   <div>
     <Menu />
     <main>
-      <h1 class="text-center py-[5rem] text-cyan-500 text-3xl">找住宿？找景點？</h1>
-      <div class="text-center pb-4">
-        <button class="bg-violet-700 text-violet-50 text-xl px-5 py-2 rounded-full" type="button" @click="toggleView">{{ showHotels ? '改用景點找住宿地點' : '改用旅宿找附近景點' }}</button>
+      <h1 class="text-center py-[5rem] text-cyan-500 text-4xl">找住宿？找景點？</h1>
+      <div class="text-center pb-5">
+        <button class="bg-violet-700 text-violet-50 text-2xl px-5 py-3 min-w-80 rounded-full cursor-pointer" type="button" @click="toggleView">{{ showHotels ? '改用景點找住宿地點' : '改用旅宿找附近景點' }}</button>
       </div>
-      <div v-if="showHotels" id="hotel-area">
-        <h2>台灣住宿資訊</h2>
-        <div>
-          <label for="city-select">選擇縣市：</label>
-          <select id="city-select" v-model="selectedCity" @change="updateQuery">
-            <option value="" disabled selected>選擇縣市</option>
-            <option value="">全部</option>
-            <option v-for="city in cities" :key="city" :value="city">{{ city }}</option>
-          </select>
+      <div v-if="showHotels" id="hotel-area" class="pt-5">
+        <!-- <h2>台灣住宿資訊</h2> -->
+        <div class="text-center mb-5">
+          <label for="city-select" class="bg-violet-100 text-violet-800 text-xl px-5 py-2 rounded-full">
+            <select class="city-select" id="city-select" v-model="selectedCity" @change="updateQuery">
+              <option value="" disabled selected>選擇縣市</option>
+              <option value="">全部</option>
+              <option v-for="city in cities" :key="city" :value="city">{{ city }}</option>
+            </select>
+          </label>
         </div>
         <div>
           <ul class="grid justify-self-center grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3 gap-4">
@@ -29,15 +30,16 @@
           </ul>
         </div>
       </div>
-      <div v-else id="scenic-area">
-        <h2>台灣景點資訊</h2>
-        <div>
-          <label for="scenic-city-select">選擇縣市：</label>
-          <select id="scenic-city-select" v-model="selectedCity" @change="updateQuery">
-            <option value="" disabled selected>選擇縣市</option>
-            <option value="">全部</option>
-            <option v-for="city in cities" :key="city" :value="city">{{ city }}</option>
-          </select>
+      <div v-else id="scenic-area" class="pt-5">
+        <!-- <h2 class="text-center text-cyan-400 text-2xl">台灣景點資訊</h2> -->
+        <div class="text-center mb-5">
+          <label for="scenic-city-select" class="bg-violet-100 text-violet-800 text-xl px-5 py-2 rounded-full">
+            <select class="city-select" id="scenic-city-select" v-model="selectedCity" @change="updateQuery">
+              <option value="" disabled selected>選擇縣市</option>
+              <option value="">全部</option>
+              <option v-for="city in cities" :key="city" :value="city">{{ city }}</option>
+            </select>
+          </label>
         </div>
         <div>
           <ul class="grid justify-self-center grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3 gap-4">
@@ -52,9 +54,23 @@
     <Footer />
   </div>
   <Modal :isOpen="!!selectedItem" @close="closeModal">
-    <h2>{{ selectedItem?.Name }}</h2>
-    <p>方圓{{ distanceRange }}公里內的{{ dataType === "hotel" ? "景點" : "飯店" }}：</p>
-    <input id="range-input" type="range" min="5" max="20" v-model="distanceRange" @input="updateNearbySpots" />
+    <h2 class="text-2xl">{{ selectedItem?.Name }}</h2>
+    <!-- <p>方圓{{ distanceRange }}公里內的{{ dataType === "hotel" ? "景點" : "旅宿" }}：</p> -->
+    <!-- <input id="range-input" type="range" min="5" max="20" v-model="distanceRange" @input="updateNearbySpots" /> -->
+    <div class="range-wrap" style="--min: 5;--max: 20;--val: 10;">
+      <input id="range-input" type="range" min="5" max="20" list="dl" v-model="distanceRange" @input="updateNearbySpots">
+      <output for="range-input">10</output>
+      <label for="range-input">方圓 {{ distanceRange }} 公里內的{{ dataType === "hotel" ? "景點" : "旅宿" }}
+        <!-- <div class="labels" aria-hidden="true">
+          <span style="--i: 1;">1</span>
+          <span style="--i: 10;">10</span>
+          <span style="--i: 20;">20</span>
+        </div> -->
+      </label>
+      <!-- <datalist id="dl">
+        <option v-for="n in 20" :key="n" :value="n" :label="n % 10 === 0 ? n : undefined">{{ n }}</option>
+      </datalist> -->
+    </div>
     <div id="map-wrapper">
       <div id="map"></div>
     </div>
@@ -76,17 +92,17 @@ import { useRoute, useRouter } from 'vue-router';
 import { useServerHead } from '#imports';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/swiper-bundle.css';
-import '~/assets/lib/leaflet/leaflet.1.9.4.css';
-import '~/assets/lib/leaflet/markercluster.1.5.3.css';
-import '~/assets/lib/leaflet/markercluster.default.1.5.3.css';
+import '~/src/lib/leaflet/leaflet.1.9.4.css';
+import '~/src/lib/leaflet/markercluster.1.5.3.css';
+import '~/src/lib/leaflet/markercluster.default.1.5.3.css';
 
-import Menu from '~/components/Menu.vue'
-import Footer from '~/components/Footer.vue'
-import Loading from '~/components/Loading.vue'
-import Modal from '~/components/Modal.vue'
-import Card from '~/components/lodging/Card.vue'
-import DetailHotel from '~/components/lodging/DetailHotel.vue'
-import DetailScenic from '~/components/lodging/DetailScenic.vue'
+import Menu from '~/components/Menu.vue';
+import Footer from '~/components/Footer.vue';
+import Loading from '~/components/Loading.vue';
+import Modal from '~/components/Modal.vue';
+import Card from '~/components/lodging/Card.vue';
+import DetailHotel from '~/components/lodging/DetailHotel.vue';
+import DetailScenic from '~/components/lodging/DetailScenic.vue';
 
 const appConfig = useAppConfig();
 const domainUrl = appConfig.domainUrl;
@@ -329,6 +345,8 @@ function addNearbyMarkers(icon, isHotel) {
   map.addLayer(markerClusterGroup);
 }
 
+
+
 onMounted(async () => {
   try {
     const hotelResponse = await fetch(`${appConfig.api.hotel}`);
@@ -371,6 +389,23 @@ onMounted(async () => {
       loading.value = false;
     }, 1600);
   }
+
+  // range input
+  const _R = ref(null);
+  const _W = ref(null);
+  const _O = ref(null);
+  nextTick(() => {
+    _R.value = document.querySelector('#range-input');
+    _W.value = _R.value.parentNode;
+    _O.value = _R.value.nextElementSibling;
+
+    document.documentElement.classList.add('js');
+
+    _R.value.addEventListener('input', e => {
+      _O.value.value = _R.value.value;
+      _W.value.style.setProperty('--val', +_R.value.value);
+    }, false);
+  });
 });
 
 watch(selectedCity, (newCity) => {
@@ -403,6 +438,8 @@ const getPriceHtml = (hotel) => {
     : `<span class="${priceClass(LowestPrice)}">${LowestPrice}</span> ~ <span class="${priceClass(CeilingPrice)}">${CeilingPrice}</span>`;
   return `價位：${priceText}。`;
 };
+
+
 </script>
 
 <style scoped>
@@ -414,7 +451,12 @@ main {
   background-color: oklch(.21 .034 264.665);
   padding: 2rem;
 }
-
+.city-select{
+  outline: none;
+  &:focus{
+    outline: none;
+  }
+}
 #map-wrapper{
   position: relative;
   max-width: 800px;
@@ -424,13 +466,152 @@ main {
   height: 400px;
   max-height: 40vh;
 }
-.card .figure {
-  background-color: var(--slate-800);
-  & img{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
+
+#range-input {
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  min-height: 1.5em;
+  background: transparent;
+  font: inherit;
+  -webkit-appearance: none;
+  appearance: none;
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    margin-top: -0.625em;
   }
+  &::-webkit-slider-runnable-track,
+  &::-moz-range-track,
+  &::-ms-track {
+    box-sizing: border-box;
+    border: none;
+    width: 12.5em;
+    height: 0.25em;
+    background: #ccc;
+  }
+  &::-webkit-slider-thumb,
+  &::-moz-range-thumb,
+  &::-ms-thumb {
+    box-sizing: border-box;
+    border: none;
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 50%;
+    background: #f90;
+  }
+  &::-ms-tooltip {
+    display: none;
+  }
+  & ~ output {
+    display: none;
+  }
+}
+.js #range-input ~ output {
+  display: block;
+  position: absolute;
+  left: 0.75em;
+  top: 0;
+  padding: 0.25em 0.5em;
+  border-radius: 3px;
+  transform: translate(calc((var(--val) - var(--min))/(var(--max) - var(--min))*12.5em - 50%));
+  background: #95a;
+  color: #eee;
+}
+
+.range-wrap {
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column-reverse;
+  position: relative;
+  width: 14rem;
+  height: 5.25rem;
+  color: #ccc;
+}
+#range-input, #range-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+}
+#range-input::-webkit-slider-runnable-track {
+  box-sizing: border-box;
+  border: none;
+  width: 14em;
+  height: 0.25em;
+  background: #ccc;
+}
+#range-input::-moz-range-track {
+  box-sizing: border-box;
+  border: none;
+  width: 14em;
+  height: 0.25em;
+  background: #ccc;
+}
+#range-input::-ms-track {
+  box-sizing: border-box;
+  border: none;
+  width: 14em;
+  height: 0.25em;
+  background: #ccc;
+}
+#range-input::-webkit-slider-thumb {
+  margin-top: -0.625em;
+  box-sizing: border-box;
+  border: none;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 50%;
+  background: #ccc;
+}
+#range-input::-moz-range-thumb {
+  box-sizing: border-box;
+  border: none;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 50%;
+  background: #ccc;
+}
+#range-input::-ms-thumb {
+  margin-top: 0;
+  box-sizing: border-box;
+  border: none;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 50%;
+  background: #ccc;
+}
+#range-input::-ms-tooltip {
+  display: none;
+}
+#range-input:focus {
+  outline: none;
+}
+#range-input:focus::-webkit-slider-thumb {
+  background: #f90;
+}
+#range-input:focus::-moz-range-thumb {
+  background: #f90;
+}
+#range-input:focus::-ms-thumb {
+  background: #f90;
+}
+#range-input:focus ~ label span {
+  color: #95a;
+}
+#range-input ~ label {
+  color: #333;
+}
+#range-input ~ label span {
+  color: #ccc;
+}
+
+.labels {
+  position: absolute;
+  bottom: 1.5em;
+  left: 0.75em;
+}
+.labels span {
+  position: absolute;
+  left: calc(var(--i)*10px);
+  transform: translate(-50%) scale(0.9);
+  font-weight: 700;
 }
 </style>

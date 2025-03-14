@@ -23,7 +23,7 @@ const emit = defineEmits(['click']);
   </li>
 </template>
 
-<style lang="css">
+<style scope>
 .card{
   position: relative;
 }

@@ -125,7 +125,7 @@ export default defineNuxtConfig({
 
   vite: {
     build: {
-      cssCodeSplit: false,
+      // cssCodeSplit: false,
       rollupOptions: {
         output: {
           assetFileNames: '[name][extname]', // 圖片、影片、字體名稱不變

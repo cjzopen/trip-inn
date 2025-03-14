@@ -107,8 +107,8 @@ import DetailScenic from '~/components/lodging/DetailScenic.vue';
 const appConfig = useAppConfig();
 const domainUrl = appConfig.domainUrl;
 
-const headTitle = ref('台灣住宿資訊');
-const headDescription = ref('根據政府提供的資訊，整理出台灣各地的民宿、旅店、旅館。');
+const headTitle = ref('台灣住宿與景點資訊');
+const headDescription = ref('根據政府提供的資訊，從景點附近整理出台灣各地的民宿、旅店、旅館。');
 
 useServerHead({
   title: headTitle.value,

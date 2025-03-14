@@ -4,7 +4,7 @@ import tailwindcss from "@tailwindcss/vite";
 // import postcssNesting from 'postcss-nesting';
 
 
-const defaultTitle = 'CJ的記事本';
+const defaultTitle = '旅遊小站';
 const defaultDescription = '';
 const domainUrl = 'https://cjzopen.github.io';
 const ver = '01';
@@ -24,7 +24,7 @@ export default defineNuxtConfig({
     fallback: '404.html',
   },
   app: {
-    baseURL: '/',
+    baseURL: '/trip-inn/',
     head: {
       htmlAttrs: {
         lang: 'zh-Hant-TW'

@@ -1,9 +1,8 @@
 <template>
   <nav id="nav">
     <ul>
-      <li><a href="/">Home</a></li>
-      <li><a href="/blog/">blog</a></li>
-      <li><a href="/web/">web</a></li>
+      <li><nuxt-link to="/" >Home</nuxt-link></li>
+      <li><nuxt-link to="/taiwan/" >Taiwan</nuxt-link></li>
       <!-- <li><a href="/contact">Contact</a></li> -->
     </ul>
   </nav>

@@ -100,7 +100,7 @@ import Menu from '~/components/Menu.vue';
 import Footer from '~/components/Footer.vue';
 import Loading from '~/components/Loading.vue';
 import Modal from '~/components/Modal.vue';
-import Card from '~/components/lodging/Card.vue';
+import Card from '~/components/Card.vue';
 import DetailHotel from '~/components/lodging/DetailHotel.vue';
 import DetailScenic from '~/components/lodging/DetailScenic.vue';
 
@@ -116,10 +116,10 @@ useServerHead({
     { name: 'description', content: headDescription.value },
     { property: 'og:title', content: headTitle.value },
     { property: 'og:description', content: headDescription.value },
-    { property: 'og:image', content: `${domainUrl}/images/og-image.png` },
+    // { property: 'og:image', content: `${domainUrl}/images/og-image.png` },
     { name: 'twitter:title', content: headTitle.value },
     { name: 'twitter:description', content: headDescription.value },
-    { name: 'twitter:image', content: `${domainUrl}/images/og-image.png` },
+    // { name: 'twitter:image', content: `${domainUrl}/images/og-image.png` },
   ]
 });
 

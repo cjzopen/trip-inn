@@ -1,0 +1,11 @@
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Mediapartners-Google
+Allow: /
+
+User-agent: *
+Disallow: /search?q=
+Allow: /
+
+Sitemap: https://cjzopen.github.io/sitemap.xml

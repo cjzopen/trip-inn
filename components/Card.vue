@@ -15,7 +15,7 @@ const emit = defineEmits(['click']);
       {{ item.Region }}
     </span>
     <figure class="figure shrink-0 w-full h-48 lg:w-[200px] lg:h-[200px] *:w-full *:h-full">
-      <img :src="item.Pictures[0] || '/images/default.webp'" :alt="item.Name" />
+      <img :src="item.Pictures[0] || '/trip-inn/images/default.webp'" :alt="item.Name" />
     </figure>
     <div class="p-2">
       <slot></slot>

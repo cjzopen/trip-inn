@@ -6,7 +6,7 @@ import tailwindcss from "@tailwindcss/vite";
 
 const defaultTitle = '旅遊小站';
 const defaultDescription = '';
-const domainUrl = 'https://cjzopen.github.io';
+const domainUrl = 'https://cjzopen.github.io/trip-inn';
 const ver = '01';
 // const defaultcanonical = `${domainUrl}${useRoute().path}`;
 
@@ -14,7 +14,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     apiSecret: '怎麼可以讓你知道呢 :P',
     public: {
-      domainUrl: process.env.DOMAIN_URL || 'https://cjzopen.github.io'
+      domainUrl: process.env.DOMAIN_URL || domainUrl
     }
   },
   // alias: {

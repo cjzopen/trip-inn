@@ -21,8 +21,14 @@ jobs:
     - name: Install dependencies
       run: npm install
 
+    # - name: Remove existing docs folder
+    #   run: rm -rf docs
+
     - name: Generate dist folder
       run: npm run ssg
+
+    # - name: Rename dist to docs
+    #   run: mv dist docs
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3

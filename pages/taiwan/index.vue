@@ -120,7 +120,10 @@ useServerHead({
     { name: 'twitter:title', content: headTitle.value },
     { name: 'twitter:description', content: headDescription.value },
     // { name: 'twitter:image', content: `${domainUrl}/images/og-image.png` },
-  ]
+  ],
+  link: [
+    { rel: 'stylesheet', href: `${domainUrl}/css/trip.css` },
+  ],
 });
 
 const hotels = ref([]);

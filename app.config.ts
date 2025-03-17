@@ -1,6 +1,6 @@
 export default defineAppConfig({
   foo: 'bar',
-  domainUrl: 'https://cjzopen.github.io',
+  domainUrl: 'https://cjzopen.github.io/trip-inn',
   theme: {
     primaryColor: '#ababab',
   },

@@ -27,14 +27,24 @@
 </template>
 
 <script setup>
+import { useServerHead } from '#imports';
 import { ref, onMounted } from 'vue';
 import Menu from '~/components/Menu.vue';
 import Footer from '~/components/Footer.vue';
+
+const appConfig = useAppConfig();
+const domainUrl = appConfig.domainUrl;
 
 const videoSrc = '/video/hiking.webm'; // 影片 URL
 const fallbackImage = '/images/hiking.webp'; // 替換成你的圖片 URL
 
 const showVideo = ref(false);
+
+useServerHead({
+  link: [
+    { rel: 'canonical', href: `${domainUrl}/` },
+  ],
+});
 
 // 檢查瀏覽器是否支援 WebM
 const checkVideoSupport = () => {

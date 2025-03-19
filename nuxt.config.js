@@ -53,11 +53,11 @@ export default defineNuxtConfig({
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: ''},
         { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400..700&display=swap'},
         
-        // {
-        //   rel: 'icon',
-        //   type: 'image/x-icon',
-        //   href: '/favicon.ico'
-        // },
+        {
+          rel: 'icon',
+          type: 'image/x-icon',
+          href: `${domainUrl}/images/favicon.ico`
+        },
         // {
         //   rel: 'icon',
         //   type: 'image/png',
@@ -157,10 +157,10 @@ export default defineNuxtConfig({
   //   }
   // },
   
-  // AppConfig
-  theme: {
+
+  // theme: {
     
-  },
+  // },
 
   components: false,
   experimental: {
@@ -205,5 +205,5 @@ export default defineNuxtConfig({
   // },
   target: 'static',
 
-  compatibilityDate: '2025-02-10'
+  compatibilityDate: '2025-03-10'
 });

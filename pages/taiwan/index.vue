@@ -122,9 +122,9 @@ useServerHead({
     { name: 'twitter:description', content: headDescription.value },
     { name: 'twitter:image', content: `${domainUrl}/images/taiwan/og.jpg` },
   ],
-  // link: [
-  //   { rel: 'stylesheet', href: `~/public/css/trip.css` },
-  // ],
+  link: [
+    { rel: 'canonical', href: `${domainUrl}/taiwan/` },
+  ],
 });
 
 const hotels = ref([]);

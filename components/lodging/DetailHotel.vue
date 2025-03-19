@@ -24,6 +24,7 @@
   </template>
   <p v-if="item?.Tel">電話：{{ item.Tel }}</p>
   <p v-if="item?.IndustryEmail">Email：{{ item.IndustryEmail }}</p>
+  <p class="mb-2" v-if="item?.Website"><a :href="item.Website" target="_blank" rel="noopener noreferrer">網站</a></p>
 </div>
 <div v-else>
   <p>沒有資料</p>

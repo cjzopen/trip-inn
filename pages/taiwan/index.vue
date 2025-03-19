@@ -123,8 +123,28 @@ useServerHead({
     { name: 'twitter:image', content: `${domainUrl}/images/taiwan/og.jpg` },
   ],
   link: [
-    { rel: 'canonical', href: `${domainUrl}/taiwan/` },
+    { rel: 'canonical', href: `${domainUrl}/taiwan` },
   ],
+  script: [
+    {
+      type: 'application/ld+json',
+      children: `{
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "name": "旅遊小站",
+        "item": "${domainUrl}/"
+      },{
+        "@type": "ListItem",
+        "position": 2,
+        "name": "台灣",
+        "item": "${domainUrl}/taiwan"
+      }]
+    }`
+    }
+  ]
 });
 
 const hotels = ref([]);

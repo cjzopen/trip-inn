@@ -2,7 +2,7 @@
   <nav id="nav">
     <ul>
       <li><nuxt-link to="/" >Home</nuxt-link></li>
-      <li><nuxt-link to="/taiwan/" >Taiwan</nuxt-link></li>
+      <li><nuxt-link to="/taiwan" >Taiwan</nuxt-link></li>
       <!-- <li><a href="/contact">Contact</a></li> -->
     </ul>
   </nav>

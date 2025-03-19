@@ -15,7 +15,7 @@ const emit = defineEmits(['click']);
       <svg class="geo-label-icon" role="presentation" aria-hidden="true">
         <use href="#pin"></use>
       </svg>
-      {{ item.Region }}
+      {{ item.Region }}{{ item.Town }}
     </span>
     <figure class="figure shrink-0 w-full h-48 lg:w-[200px] lg:h-[200px] *:w-full *:h-full">
       <img :src="item.Pictures[0] || `${domainUrl}/images/default.webp`" :alt="item.Name" />

@@ -20,7 +20,7 @@
         <div>
           <ul class="grid justify-self-center grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3 gap-4">
             <Card v-for="hotel in displayHotels" :key="hotel.Id" :item="hotel" @click="showDetails(hotel, 'hotel')">
-              <div class="title text-xl font-bold mb-2">{{ hotel.Name }}</div>
+              <div class="title text-2xl font-bold mb-2">{{ hotel.Name }}</div>
               <p class="min-h-[48px]">{{ hotel.Add }}</p>
               <ul>
                 <li>共有 {{ hotel.TotalNumberofRooms }} 間房間。</li>
@@ -77,11 +77,11 @@
     <div id="description">
       <component :is="isHotel ? 'DetailHotel' : 'DetailScenic'" :item="selectedItem" />
     </div>
-    <ul>
+    <!-- <ul>
       <li v-for="spot in nearbySpots" :key="spot.Id">
         {{ spot.Region }}：{{ spot.Name }}
       </li>
-    </ul>
+    </ul> -->
   </Modal>
   <Loading :loading="loading" />
 </template>
@@ -90,11 +90,12 @@
 import { ref, onMounted, computed, watch, createApp, nextTick } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useServerHead } from '#imports';
-import { Swiper, SwiperSlide } from 'swiper/vue';
-import 'swiper/swiper-bundle.css';
+// import { Swiper, SwiperSlide } from 'swiper/vue';
+// import 'swiper/swiper-bundle.css';
 import '~/src/lib/leaflet/leaflet.1.9.4.css';
 import '~/src/lib/leaflet/markercluster.1.5.3.css';
 import '~/src/lib/leaflet/markercluster.default.1.5.3.css';
+import '~/public/css/trip.css';
 
 import Menu from '~/components/Menu.vue';
 import Footer from '~/components/Footer.vue';
@@ -116,14 +117,14 @@ useServerHead({
     { name: 'description', content: headDescription.value },
     { property: 'og:title', content: headTitle.value },
     { property: 'og:description', content: headDescription.value },
-    // { property: 'og:image', content: `${domainUrl}/images/og-image.png` },
+    { property: 'og:image', content: `${domainUrl}/images/taiwan/og.jpg` },
     { name: 'twitter:title', content: headTitle.value },
     { name: 'twitter:description', content: headDescription.value },
-    // { name: 'twitter:image', content: `${domainUrl}/images/og-image.png` },
+    { name: 'twitter:image', content: `${domainUrl}/images/taiwan/og.jpg` },
   ],
-  link: [
-    { rel: 'stylesheet', href: `${domainUrl}/css/trip.css` },
-  ],
+  // link: [
+  //   { rel: 'stylesheet', href: `~/public/css/trip.css` },
+  // ],
 });
 
 const hotels = ref([]);
@@ -145,14 +146,14 @@ const showHotels = ref(true);
 const isHotel = ref(true);
 // const mapClickTarget = ref([]);
 const hotelIconSettings = ref({
-  // iconUrl: new URL('/src/assets/images/taiwan-lodging/home.svg', import.meta.url).href,
-   iconUrl: '/images/taiwan-lodging/home.svg',
+  // iconUrl: new URL('/src/assets/images/taiwan/home.svg', import.meta.url).href,
+   iconUrl: '/images/taiwan/home.svg',
   iconSize: [27, 24],
   iconAnchor: [14, 14]
 });
 const scenicIconSettings = ref({
-  // iconUrl: new URL('/src/assets/images/taiwan-lodging/pin.svg', import.meta.url).href,
-  iconUrl: '/images/taiwan-lodging/pin.svg',
+  // iconUrl: new URL('/src/assets/images/taiwan/pin.svg', import.meta.url).href,
+  iconUrl: '/images/taiwan/pin.svg',
   iconSize: [21, 28],
   iconAnchor: [10, 18]
 });
@@ -357,7 +358,8 @@ onMounted(async () => {
     allHotels.value = hotelData.XML_Head.Infos.Info.map(hotel => ({
       ...hotel,
       Region: hotel.Region === null ? hotel.Add.slice(0, 3) : hotel.Region,
-      Pictures: [hotel.Picture1, hotel.Picture2, hotel.Picture3].filter(Boolean)
+      Pictures: [hotel.Picture1, hotel.Picture2, hotel.Picture3].filter(Boolean),
+      PicDescribes: [hotel.Picdescribe1, hotel.Picdescribe2, hotel.Picdescribe3].filter(Boolean)
     }));
 
     const scenicResponse = await fetch(`${appConfig.api.scenic}`);
@@ -365,7 +367,8 @@ onMounted(async () => {
     allScenics.value = scenicData.XML_Head.Infos.Info.map(scenic => ({
       ...scenic,
       Region: scenic.Region === null ? scenic.Add.slice(0, 3) : scenic.Region,
-      Pictures: [scenic.Picture1, scenic.Picture2, scenic.Picture3].filter(Boolean)
+      Pictures: [scenic.Picture1, scenic.Picture2, scenic.Picture3].filter(Boolean),
+      PicDescribes: [scenic.Picdescribe1, scenic.Picdescribe2, scenic.Picdescribe3].filter(Boolean)
     }));
 
     const todayDate = new Date().getDate();
@@ -394,21 +397,21 @@ onMounted(async () => {
   }
 
   // range input
-  const _R = ref(null);
-  const _W = ref(null);
-  const _O = ref(null);
-  nextTick(() => {
-    _R.value = document.querySelector('#range-input');
-    _W.value = _R.value.parentNode;
-    _O.value = _R.value.nextElementSibling;
+  // const _R = ref(null);
+  // const _W = ref(null);
+  // const _O = ref(null);
+  // nextTick(() => {
+    // _R.value = document.querySelector('#range-input');
+    // _W.value = _R.value.parentNode;
+    // _O.value = _R.value.nextElementSibling;
 
-    document.documentElement.classList.add('js');
+    // document.documentElement.classList.add('js');
 
-    _R.value.addEventListener('input', e => {
-      _O.value.value = _R.value.value;
-      _W.value.style.setProperty('--val', +_R.value.value);
-    }, false);
-  });
+    // _R.value.addEventListener('input', e => {
+      // _O.value.value = _R.value.value;
+      // _W.value.style.setProperty('--val', +_R.value.value);
+    // }, false);
+  // });
 });
 
 watch(selectedCity, (newCity) => {
@@ -441,180 +444,4 @@ const getPriceHtml = (hotel) => {
     : `<span class="${priceClass(LowestPrice)}">${LowestPrice}</span> ~ <span class="${priceClass(CeilingPrice)}">${CeilingPrice}</span>`;
   return `價位：${priceText}。`;
 };
-
-
 </script>
-
-<style scoped>
-/* @import url('https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css');
-@import url('https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.css');
-@import url('https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.css'); */
-
-main {
-  background-color: oklch(.21 .034 264.665);
-  padding: 2rem;
-}
-.city-select{
-  outline: none;
-  &:focus{
-    outline: none;
-  }
-}
-#map-wrapper{
-  position: relative;
-  max-width: 800px;
-}
-#map {
-  width: 100%;
-  height: 400px;
-  max-height: 40vh;
-}
-
-#range-input {
-  flex: 1;
-  margin: 0;
-  padding: 0;
-  min-height: 1.5em;
-  background: transparent;
-  font: inherit;
-  -webkit-appearance: none;
-  appearance: none;
-  &::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    margin-top: -0.625em;
-  }
-  &::-webkit-slider-runnable-track,
-  &::-moz-range-track,
-  &::-ms-track {
-    box-sizing: border-box;
-    border: none;
-    width: 12.5em;
-    height: 0.25em;
-    background: #ccc;
-  }
-  &::-webkit-slider-thumb,
-  &::-moz-range-thumb,
-  &::-ms-thumb {
-    box-sizing: border-box;
-    border: none;
-    width: 1.5em;
-    height: 1.5em;
-    border-radius: 50%;
-    background: #f90;
-  }
-  &::-ms-tooltip {
-    display: none;
-  }
-  & ~ output {
-    display: none;
-  }
-}
-.js #range-input ~ output {
-  display: block;
-  position: absolute;
-  left: 0.75em;
-  top: 0;
-  padding: 0.25em 0.5em;
-  border-radius: 3px;
-  transform: translate(calc((var(--val) - var(--min))/(var(--max) - var(--min))*12.5em - 50%));
-  background: #95a;
-  color: #eee;
-}
-
-.range-wrap {
-  font-size: 1rem;
-  display: flex;
-  flex-direction: column-reverse;
-  position: relative;
-  width: 14rem;
-  height: 5.25rem;
-  color: #ccc;
-}
-#range-input, #range-input::-webkit-slider-thumb {
-  -webkit-appearance: none;
-}
-#range-input::-webkit-slider-runnable-track {
-  box-sizing: border-box;
-  border: none;
-  width: 14em;
-  height: 0.25em;
-  background: #ccc;
-}
-#range-input::-moz-range-track {
-  box-sizing: border-box;
-  border: none;
-  width: 14em;
-  height: 0.25em;
-  background: #ccc;
-}
-#range-input::-ms-track {
-  box-sizing: border-box;
-  border: none;
-  width: 14em;
-  height: 0.25em;
-  background: #ccc;
-}
-#range-input::-webkit-slider-thumb {
-  margin-top: -0.625em;
-  box-sizing: border-box;
-  border: none;
-  width: 1.5em;
-  height: 1.5em;
-  border-radius: 50%;
-  background: #ccc;
-}
-#range-input::-moz-range-thumb {
-  box-sizing: border-box;
-  border: none;
-  width: 1.5em;
-  height: 1.5em;
-  border-radius: 50%;
-  background: #ccc;
-}
-#range-input::-ms-thumb {
-  margin-top: 0;
-  box-sizing: border-box;
-  border: none;
-  width: 1.5em;
-  height: 1.5em;
-  border-radius: 50%;
-  background: #ccc;
-}
-#range-input::-ms-tooltip {
-  display: none;
-}
-#range-input:focus {
-  outline: none;
-}
-#range-input:focus::-webkit-slider-thumb {
-  background: #f90;
-}
-#range-input:focus::-moz-range-thumb {
-  background: #f90;
-}
-#range-input:focus::-ms-thumb {
-  background: #f90;
-}
-#range-input:focus ~ label span {
-  color: #95a;
-}
-#range-input ~ label {
-  color: #333;
-}
-#range-input ~ label span {
-  color: #ccc;
-}
-
-.labels {
-  position: absolute;
-  bottom: 1.5em;
-  left: 0.75em;
-}
-.labels span {
-  position: absolute;
-  left: calc(var(--i)*10px);
-  transform: translate(-50%) scale(0.9);
-  font-weight: 700;
-}
-</style>

@@ -18,8 +18,10 @@ logs
 .idea
 thumbs.db
 
-
 # Local env files
 .env
 .env.*
 !.env.example
+
+#special
+dist

@@ -2,51 +2,64 @@
   <div>
     <Menu />
     <main class="bg-sky-900 bg-linear-to-bl from-sky-900 to-purple-300">
-      <div class="text-center">
-        <h1 class="text-center py-[2rem] text-sky-400 text-5xl">旅遊住宿地點查詢</h1>
+      <div class="wrapper p-4">
+        <div class="text-center flex justify-center items-center h-full">
+          <div class="pb-[15cqh]">
+            <h1 class="text-center py-[2rem] text-sky-400 text-5xl">旅遊住宿地點查詢</h1>
+            <p class="text-sky-400">用景點尋找附近合適的旅宿，或是用旅宿查看附近有哪些知名景點</p>
+          </div>
+        </div>
       </div>
-      <div class="text-center px-3">
-        <img class="inline rounded-sm" width="512" height="512" loading="lazy" src="/images/fixing.webp" alt="維護中">
-        <p class="mt-3">目前正在重新裝修中。</p>
-        <address>2012cjz@gmail.com</address>
-      </div>
-      <span aria-hidden="true" class="color-ball" v-for="n in 8" :key="n" :style="ballSpanStyle(n)"></span>
+      <video
+        v-if="showVideo"
+        src="/video/hiking.webm"
+        autoplay
+        muted
+        loop
+        playsinline
+        poster="/images/hiking.webp"
+        class="background-video"
+      ></video>
+      <img v-else src="/images/hiking.webp" alt="*" class="background-image" />
     </main>
     <Footer />
   </div>
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import Menu from '~/components/Menu.vue';
 import Footer from '~/components/Footer.vue';
 
-const colors = ['#583C87', '#E45A84', '#FFACAC'];
-const particleSize = 20;
-const animationDuration = 15;
+const videoSrc = '/video/hiking.webm'; // 影片 URL
+const fallbackImage = '/images/hiking.webp'; // 替換成你的圖片 URL
 
-const ballSpanStyle = (index) => {
-  const color = colors[Math.floor(Math.random() * colors.length)];
-  const top = `${Math.random() * 100}%`;
-  const left = `${Math.random() * 100}%`;
-  const duration = `${(Math.random() * animationDuration + 10).toFixed(1)}s`;
-  const delay = `${(Math.random() * (animationDuration + 10) * -1).toFixed(1)}s`;
-  const transformOrigin = `${(Math.random() * 50 - 25).toFixed(1)}vw ${(Math.random() * 50 - 25).toFixed(1)}vh`;
-  const blurRadius = `${((Math.random() + 0.5) * particleSize * 0.5).toFixed(1)}vmin`;
-  const x = Math.random() > 0.5 ? -1 : 1;
-  const boxShadow = `${particleSize * 2 * x}vmin 0 ${blurRadius} currentColor`;
+const showVideo = ref(false);
 
-  return {
-    color,
-    top,
-    left,
-    animationDuration: duration,
-    animationDelay: delay,
-    transformOrigin,
-    boxShadow,
-    zIndex: -1
-  };
+// 檢查瀏覽器是否支援 WebM
+const checkVideoSupport = () => {
+  const video = document.createElement('video');
+  return video.canPlayType('video/webm') !== '';
 };
+
+// 檢查是否為行動裝置
+const isMobile = () => /Mobi|Android/i.test(navigator.userAgent);
+
+// 檢查裝置是否連接 WiFi
+const checkWiFi = () => {
+  if (!navigator.connection) return false;
+  return navigator.connection.effectiveType === 'wifi';
+};
+
+// 初始化判斷
+onMounted(async () => {
+  const supportsWebM = checkVideoSupport();
+  const isOnWiFi = await checkWiFi();
+
+  // PC 只要支援 WebM 就播放
+  // 行動裝置則需要 WiFi 才播放
+  showVideo.value = supportsWebM && (!isMobile() || isOnWiFi);
+});
 </script>
 
 <style scoped>
@@ -54,10 +67,20 @@ main {
   padding: 2rem;
   overflow: hidden;
   position: relative;
-  clip-path: inset(0);
-  & *:not(.color-ball){
+  height: calc(100dvh - 56px);
+  overflow: hidden;
+  & *:not(.background-video,.background-image){
     z-index: 1;
   }
+}
+.wrapper{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .1);
+  container-type: inline-size;
 }
 h1 {
   background: linear-gradient(to right, #9796f0, #fbc7d4); 
@@ -65,19 +88,14 @@ h1 {
   -webkit-text-fill-color: transparent;
   display: inline-block;
 }
-.color-ball {
-  width: 20vmin;
-  height: 20vmin;
-  border-radius: 20vmin;
-  backface-visibility: hidden;
+
+.background-video,
+.background-image {
   position: absolute;
-  z-index: 0;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-}
-@keyframes move {
-  100% {
-    transform: translate3d(0, 0, 1px) rotate(360deg);
-  }
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 </style>

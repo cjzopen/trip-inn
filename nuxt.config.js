@@ -5,7 +5,7 @@ import tailwindcss from "@tailwindcss/vite";
 
 
 const defaultTitle = '旅遊小站';
-const defaultDescription = '';
+const defaultDescription = '用景點找尋附近合適的旅宿，或是用住宿地點查看附近有哪些知名景點。';
 const domainUrl = 'https://cjzopen.github.io/trip-inn';
 const ver = '01';
 // const defaultcanonical = `${domainUrl}${useRoute().path}`;

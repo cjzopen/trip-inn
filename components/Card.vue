@@ -2,7 +2,7 @@
 defineProps({
   item: Object, 
 });
-const defaultImg = new URL('/public/images/default.webp', import.meta.url).href;
+// const defaultImg = new URL('/public/images/default.webp', import.meta.url).href;
 // 定義可以發出的 click 事件
 const emit = defineEmits(['click']); 
 </script>
@@ -16,7 +16,7 @@ const emit = defineEmits(['click']);
       {{ item.Region }}
     </span>
     <figure class="figure shrink-0 w-full h-48 lg:w-[200px] lg:h-[200px] *:w-full *:h-full">
-      <img :src="item.Pictures[0] || defaultImg" :alt="item.Name" />
+      <img :src="item.Pictures[0] || `${domainUrl}/images/default.webp`" :alt="item.Name" />
     </figure>
     <div class="p-2">
       <slot></slot>

@@ -147,13 +147,13 @@ const isHotel = ref(true);
 // const mapClickTarget = ref([]);
 const hotelIconSettings = ref({
   // iconUrl: new URL('/src/assets/images/taiwan/home.svg', import.meta.url).href,
-   iconUrl: '/images/taiwan/home.svg',
+  iconUrl: `${domainUrl}/images/taiwan/home.svg`,
   iconSize: [27, 24],
   iconAnchor: [14, 14]
 });
 const scenicIconSettings = ref({
   // iconUrl: new URL('/src/assets/images/taiwan/pin.svg', import.meta.url).href,
-  iconUrl: '/images/taiwan/pin.svg',
+  iconUrl: `${domainUrl}/images/taiwan/pin.svg`,
   iconSize: [21, 28],
   iconAnchor: [10, 18]
 });

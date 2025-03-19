@@ -3,6 +3,8 @@ defineProps({
   item: Object, 
 });
 // const defaultImg = new URL('/public/images/default.webp', import.meta.url).href;
+const appConfig = useAppConfig();
+const domainUrl = appConfig.domainUrl;
 // 定義可以發出的 click 事件
 const emit = defineEmits(['click']); 
 </script>

@@ -1,5 +1,11 @@
 .card{
   position: relative;
+  cursor: pointer;
+  &:hover{
+    /* transform: scale(1.02); */
+    /* transition: all .3s ease-in-out; */
+    animation: float 3s infinite;
+  }
 }
 .card .figure {
   background-color: var(--slate-800);
@@ -35,7 +41,11 @@
   top: .25rem;
   width: .5625rem;
 }
-
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-0.25rem); }
+  100% { transform: translateY(0); }
+}
 main {
   background-color: oklch(.21 .034 264.665);
   padding: 2rem;

@@ -30,10 +30,13 @@ jobs:
     # - name: Rename dist to docs
     #   run: mv dist docs
 
+    - name: Create .nojekyll file
+      run: touch ./docs/.nojekyll
+
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./docs
-        external_repository: cjzopen/trip-inn
-        publish_branch: main
+        # external_repository: cjzopen/trip-inn
+        # publish_branch: main

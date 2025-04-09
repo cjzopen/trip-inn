@@ -168,7 +168,7 @@ export default defineNuxtConfig({
   },
   build: {
     transpile: ['vue', 'vue-router', 'nuxt', 'estree-walker'],
-    extractCSS: true, // 啟用 CSS 提取
+    // extractCSS: true, // 啟用 CSS 提取
     filenames: {
       app: () => 'app.js',
       chunk: () => '[name].js', // 避免 chunk 有 hash

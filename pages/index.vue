@@ -36,7 +36,7 @@ const appConfig = useAppConfig();
 const domainUrl = appConfig.domainUrl;
 
 const videoSrc = '/video/hiking.webm'; // 影片 URL
-const fallbackImage = '/images/hiking.webp'; // 替換成你的圖片 URL
+const fallbackImage = '/images/hiking.webp'; // 影片的 poster 與備案圖片
 
 const showVideo = ref(false);
 

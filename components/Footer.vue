@@ -5,11 +5,10 @@
   <div>
     <svg style="position:absolute;width:0;height:0;visibility:hidden;" role="presentation" focusable="false">
     <defs>
-       <symbol viewBox="0 0 16 16" id="article"><g fill-rule="evenodd"><path d="M1 3h10a2 2 0 012 2v10a1 1 0 01-1 1H2a2 2 0 01-2-2V4a1 1 0 011-1z" fill="currentColor"/><rect width="13" height="13" x="2" y="1" fill="#FFF" rx="1"/><rect width="13" height="13" x="3" rx="1.25" fill="currentColor"/><path fill="#FFF" d="M5 2h10v2H5zm0 3h10v2H5zm0 3h5v2H5z"/></g></symbol>
-
-        
-      
-        
+      <symbol viewBox="0 0 16 16" id="article"><g fill-rule="evenodd"><path d="M1 3h10a2 2 0 012 2v10a1 1 0 01-1 1H2a2 2 0 01-2-2V4a1 1 0 011-1z" fill="currentColor"/><rect width="13" height="13" x="2" y="1" fill="#FFF" rx="1"/><rect width="13" height="13" x="3" rx="1.25" fill="currentColor"/><path fill="#FFF" d="M5 2h10v2H5zm0 3h10v2H5zm0 3h5v2H5z"/></g></symbol>
+  <symbol viewBox="0 0 24 24" id="heart">
+    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+  </symbol>
           <symbol viewBox="0 0 43 30" fill="none" id="youtube-inverted">
 <path d="M41.4118 4.6875C40.9765 2.85 39.5365 1.39286 37.6471 0.9375C34.4118 0 21.1765 0 21.6471 0C21.1765 0 7.94118 0 4.70588 0.9375C2.81647 1.39286 1.37647 2.85 0.941177 4.6875C0 8.03571 0 15 0 15C0 15 0 21.9643 0.941177 25.3125C1.37647 27.15 2.81647 28.6071 4.70588 29.0625C7.94118 30 21.1765 30 21.6471 30C21.1765 30 34.4118 30 37.6471 29.0625C39.5365 28.6071 40.9765 27.15 41.4118 25.3125C42.3529 21.9643 42.3529 15 42.3529 15C42.3529 15 42.3529 8.03571 41.4118 4.6875Z" fill="white"/>
 <path d="M15.8823 21.1767V8.82373L27.3529 15.4753L15.8823 21.1767Z" fill="#202124"/>
@@ -179,9 +178,9 @@
 <script setup></script>
 
 <style>
-:root {
+/* :root {
   --color-orange: #FFA500;
-}
+} */
 #footer {
   background-color: #232323;
   text-align: center;

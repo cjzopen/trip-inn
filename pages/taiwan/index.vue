@@ -45,7 +45,7 @@
           <ul class="grid justify-self-center grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3 gap-4">
             <Card v-for="scenic in displayScenics" :key="scenic.Id" :item="scenic" @click="showDetails(scenic, 'scenic')">
               <div class="title text-xl font-bold mb-2">{{ scenic.Name }}</div>
-              <p class="min-h-[48px]"></p>
+              <p class="min-h-[48px]">{{ scenic.Add }}</p>
             </Card>
           </ul>
         </div>

@@ -127,10 +127,10 @@ useServerHead({
   ],
   link: [
     { rel: 'canonical', href: `${domainUrl}/taiwan` },
-    { rel: 'stylesheet', href: '~/src/lib/leaflet/leaflet.1.9.4.css' },
-    { rel: 'stylesheet', href: '~/src/lib/leaflet/markercluster.1.5.3.css' },
-    { rel: 'stylesheet', href: '~/src/lib/leaflet/markercluster.default.1.5.3.css' },
-    { rel: 'stylesheet', href: `~/src/assets/css/trip.css` },
+    { rel: 'stylesheet', href: `${domainUrl}/lib/leaflet/leaflet.1.9.4.css` },
+    { rel: 'stylesheet', href: `${domainUrl}/lib/leaflet/markercluster.1.5.3.css` },
+    { rel: 'stylesheet', href: `${domainUrl}/lib/leaflet/markercluster.default.1.5.3.css` },
+    { rel: 'stylesheet', href: `${domainUrl}/assets/css/trip.css` },
   ],
   script: [
     {

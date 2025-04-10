@@ -19,14 +19,16 @@
         </div>
         <div>
           <ul class="grid justify-self-center grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3 gap-4">
-            <Card v-for="hotel in displayHotels" :key="hotel.Id" :item="hotel" @click="showDetails(hotel, 'hotel')">
-              <div class="title text-2xl font-bold mb-2">{{ hotel.Name }}</div>
-              <p class="min-h-[48px]">{{ hotel.Add }}</p>
-              <ul>
-                <li>共有 {{ hotel.TotalNumberofRooms }} 間房間。</li>
-                <li v-html="getPriceHtml(hotel)"></li>
-              </ul>
-            </Card>
+            <client-only>
+              <Card v-for="hotel in displayHotels" :key="hotel.Id" :item="hotel" @click="showDetails(hotel, 'hotel')">
+                <div class="title text-2xl font-bold mb-2">{{ hotel.Name }}</div>
+                <p class="min-h-[48px]">{{ hotel.Add }}</p>
+                <ul>
+                  <li>共有 {{ hotel.TotalNumberofRooms }} 間房間。</li>
+                  <li v-html="getPriceHtml(hotel)"></li>
+                </ul>
+              </Card>
+            </client-only>
           </ul>
         </div>
       </div>
@@ -43,47 +45,52 @@
         </div>
         <div>
           <ul class="grid justify-self-center grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3 gap-4">
-            <Card v-for="scenic in displayScenics" :key="scenic.Id" :item="scenic" @click="showDetails(scenic, 'scenic')">
-              <div class="title text-xl font-bold mb-2">{{ scenic.Name }}</div>
-              <p class="min-h-[48px]">{{ scenic.Add }}</p>
-            </Card>
+            <client-only>
+              <Card v-for="scenic in displayScenics" :key="scenic.Id" :item="scenic" @click="showDetails(scenic, 'scenic')">
+                <div class="title text-xl font-bold mb-2">{{ scenic.Name }}</div>
+                <p class="min-h-[48px]">{{ scenic.Add }}</p>
+              </Card>
+            </client-only>
           </ul>
         </div>
       </div>
     </main>
     <Footer />
   </div>
-  <Modal :isOpen="!!selectedItem" @close="closeModal">
-    <h2 class="text-2xl">{{ selectedItem?.Name }}</h2>
-    <!-- <p>方圓{{ distanceRange }}公里內的{{ dataType === "hotel" ? "景點" : "旅宿" }}：</p> -->
-    <!-- <input id="range-input" type="range" min="5" max="20" v-model="distanceRange" @input="updateNearbySpots" /> -->
-    <div class="range-wrap" style="--min: 5;--max: 20;--val: 10;">
-      <input id="range-input" type="range" min="5" max="20" list="dl" v-model="distanceRange" @input="updateNearbySpots">
-      <output for="range-input">10</output>
-      <label for="range-input">方圓 {{ distanceRange }} 公里內的{{ dataType === "hotel" ? "景點" : "旅宿" }}
-        <!-- <div class="labels" aria-hidden="true">
-          <span style="--i: 1;">1</span>
-          <span style="--i: 10;">10</span>
-          <span style="--i: 20;">20</span>
-        </div> -->
-      </label>
-      <!-- <datalist id="dl">
-        <option v-for="n in 20" :key="n" :value="n" :label="n % 10 === 0 ? n : undefined">{{ n }}</option>
-      </datalist> -->
-    </div>
-    <div id="map-wrapper">
-      <div id="map"></div>
-    </div>
-    <div id="description">
-      <component :is="isHotel ? 'DetailHotel' : 'DetailScenic'" :item="selectedItem" />
-    </div>
-    <!-- <ul>
-      <li v-for="spot in nearbySpots" :key="spot.Id">
-        {{ spot.Region }}：{{ spot.Name }}
-      </li>
-    </ul> -->
-  </Modal>
-  <Loading :loading="loading" />
+    <Modal :isOpen="!!selectedItem" @close="closeModal">
+      <h2 class="text-2xl">{{ selectedItem?.Name }}</h2>
+      <!-- <p>方圓{{ distanceRange }}公里內的{{ dataType === "hotel" ? "景點" : "旅宿" }}：</p> -->
+      <!-- <input id="range-input" type="range" min="5" max="20" v-model="distanceRange" @input="updateNearbySpots" /> -->
+      <div class="range-wrap" style="--min: 5;--max: 20;--val: 10;">
+        <input id="range-input" type="range" min="5" max="20" list="dl" v-model="distanceRange" @input="updateNearbySpots">
+        <output for="range-input">10</output>
+        <label for="range-input">方圓 {{ distanceRange }} 公里內的{{ dataType === "hotel" ? "景點" : "旅宿" }}
+          <!-- <div class="labels" aria-hidden="true">
+            <span style="--i: 1;">1</span>
+            <span style="--i: 10;">10</span>
+            <span style="--i: 20;">20</span>
+          </div> -->
+        </label>
+        <!-- <datalist id="dl">
+          <option v-for="n in 20" :key="n" :value="n" :label="n % 10 === 0 ? n : undefined">{{ n }}</option>
+        </datalist> -->
+      </div>
+      <div id="map-wrapper">
+        <div id="map"></div>
+      </div>
+      <div id="description">
+        <component :is="isHotel ? 'DetailHotel' : 'DetailScenic'" :item="selectedItem" />
+      </div>
+      <!-- <ul>
+        <li v-for="spot in nearbySpots" :key="spot.Id">
+          {{ spot.Region }}：{{ spot.Name }}
+        </li>
+      </ul> -->
+    </Modal>
+  
+  <client-only>
+    <Loading :loading="loading" />
+  </client-only>
 </template>
 
 <script setup>
@@ -95,7 +102,7 @@ import { useServerHead } from '#imports';
 import '~/src/lib/leaflet/leaflet.1.9.4.css';
 import '~/src/lib/leaflet/markercluster.1.5.3.css';
 import '~/src/lib/leaflet/markercluster.default.1.5.3.css';
-import '~/public/css/trip.css';
+// import '~/public/css/trip.css';
 
 import Menu from '~/components/Menu.vue';
 import Footer from '~/components/Footer.vue';
@@ -465,3 +472,266 @@ const getPriceHtml = (hotel) => {
   return `價位：${priceText}。`;
 };
 </script>
+<style>
+.card{
+  position: relative;
+  cursor: pointer;
+  &:hover{
+    /* transform: scale(1.02); */
+    /* transition: all .3s ease-in-out; */
+    animation: float 3s infinite;
+  }
+}
+.card .figure {
+  background-color: var(--slate-800);
+  & img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+}
+.card .geo-label{
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  background: #fff;
+  border-radius: .4375rem 0 .3125rem 0;
+  box-shadow: 0 .0625rem .125rem rgba(0, 0, 0, .1);
+  color: #3c4043;
+  display: inline-flex;
+  margin-bottom: .25rem;
+  margin-right: .25rem;
+  padding: .1875rem .5rem .125rem;
+  vertical-align: top;
+  font-size: .75rem;
+}
+.geo-label-icon{
+  fill: currentColor;
+  height: .5625rem;
+  left: .0625rem;
+  margin-right: .125rem;
+  position: relative;
+  top: .25rem;
+  width: .5625rem;
+}
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-0.25rem); }
+  100% { transform: translateY(0); }
+}
+main {
+  background-color: oklch(.21 .034 264.665);
+  padding: 2rem;
+}
+.city-select{
+  outline: none;
+  &:focus{
+    outline: none;
+  }
+}
+#map-wrapper{
+  position: relative;
+  width: calc(100% - 60px);
+  margin-bottom: 1rem;
+}
+#map {
+  width: 100%;
+  height: 400px;
+  max-height: 40vh;
+}
+
+#range-input {
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  min-height: 1.5em;
+  background: transparent;
+  font: inherit;
+  -webkit-appearance: none;
+  appearance: none;
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    margin-top: -0.625em;
+  }
+  &::-webkit-slider-runnable-track,
+  &::-moz-range-track,
+  &::-ms-track {
+    box-sizing: border-box;
+    border: none;
+    width: 12.5em;
+    height: 0.25em;
+    background: #ccc;
+  }
+  &::-webkit-slider-thumb,
+  &::-moz-range-thumb,
+  &::-ms-thumb {
+    box-sizing: border-box;
+    border: none;
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 50%;
+    background: #f90;
+  }
+  &::-ms-tooltip {
+    display: none;
+  }
+  & ~ output {
+    display: none;
+  }
+}
+.js #range-input ~ output {
+  display: block;
+  position: absolute;
+  left: 0.75em;
+  top: 0;
+  padding: 0.25em 0.5em;
+  border-radius: 3px;
+  transform: translate(calc((var(--val) - var(--min))/(var(--max) - var(--min))*12.5em - 50%));
+  background: #95a;
+  color: #eee;
+}
+
+.range-wrap {
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column-reverse;
+  position: relative;
+  width: 14rem;
+  height: 5.25rem;
+  color: #ccc;
+}
+#range-input, #range-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+}
+#range-input::-webkit-slider-runnable-track {
+  box-sizing: border-box;
+  border: none;
+  width: 14em;
+  height: 0.25em;
+  background: #ccc;
+}
+#range-input::-moz-range-track {
+  box-sizing: border-box;
+  border: none;
+  width: 14em;
+  height: 0.25em;
+  background: #ccc;
+}
+#range-input::-ms-track {
+  box-sizing: border-box;
+  border: none;
+  width: 14em;
+  height: 0.25em;
+  background: #ccc;
+}
+#range-input::-webkit-slider-thumb {
+  margin-top: -0.625em;
+  box-sizing: border-box;
+  border: none;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 50%;
+  background: #ccc;
+}
+#range-input::-moz-range-thumb {
+  box-sizing: border-box;
+  border: none;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 50%;
+  background: #ccc;
+}
+#range-input::-ms-thumb {
+  margin-top: 0;
+  box-sizing: border-box;
+  border: none;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 50%;
+  background: #ccc;
+}
+#range-input::-ms-tooltip {
+  display: none;
+}
+#range-input:focus {
+  outline: none;
+}
+#range-input:focus::-webkit-slider-thumb {
+  background: #f90;
+}
+#range-input:focus::-moz-range-thumb {
+  background: #f90;
+}
+#range-input:focus::-ms-thumb {
+  background: #f90;
+}
+#range-input:focus ~ label span {
+  color: #95a;
+}
+#range-input ~ label {
+  color: #333;
+}
+#range-input ~ label span {
+  color: #ccc;
+}
+
+.labels {
+  position: absolute;
+  bottom: 1.5em;
+  left: 0.75em;
+}
+.labels span {
+  position: absolute;
+  left: calc(var(--i)*10px);
+  transform: translate(-50%) scale(0.9);
+  font-weight: 700;
+}
+.model-photos{
+  display: flex;
+  gap: 5px;
+  & > figure{
+    width: 25%;
+    max-width: 200px;
+    aspect-ratio: 1 / 1;
+  }
+  & img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+}
+.list-disc{
+  padding-inline-start: 22px;
+}
+.heart-icon::before {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: red;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: scale(0);
+  opacity: 0;
+  animation: none;
+}
+.heart-icon.animate::before {
+  animation: expand-fade .3s ease-out;
+}
+@keyframes expand-fade {
+  from {
+    transform: scale(1);
+    opacity: 0.2;
+  }
+  to {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+</style>

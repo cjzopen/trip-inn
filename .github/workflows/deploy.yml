@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main
+      - gh-pages
 
 jobs:
   build:
@@ -30,8 +30,8 @@ jobs:
     # - name: Rename dist to docs
     #   run: mv dist docs
 
-    - name: Create .nojekyll file
-      run: touch ./docs/.nojekyll
+    # - name: Create .nojekyll file
+    #   run: touch .output/public/.nojekyll
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3

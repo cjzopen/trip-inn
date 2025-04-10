@@ -2,7 +2,9 @@
 // import { useRuntimeConfig } from '#imports';
 import tailwindcss from "@tailwindcss/vite";
 // import postcssNesting from 'postcss-nesting';
-
+import fs from 'fs';
+import path from 'path';
+import glob from 'glob';
 
 const defaultTitle = '旅遊小站';
 const defaultDescription = '用景點找尋附近合適的旅宿，或是用住宿地點查看附近有哪些知名景點。';
@@ -145,15 +147,29 @@ export default defineNuxtConfig({
     }
   },
   // hooks: {
-  //   'prerender:done'() {
-  //     console.log('💡 強制移除所有 HTML 中錯誤的 CSS 連結');
-  //     const files = glob.sync('dist/**/*.html');
-  //     files.forEach(file => {
-  //       let content = fs.readFileSync(file, 'utf8');
-  //       const fixedContent = content.replace(/<link rel="stylesheet" href="\/_nuxt\/style\.css" crossorigin>/g, '');
-  //       fs.writeFileSync(file, fixedContent);
-  //       console.log(`✅ 修正 ${file}`);
-  //     });
+  //   'nitro:prerender:generate': async () => {
+  //     const distDir = './.output/public';
+  //     const htmlFiles = glob.sync(`${distDir}/**/*.html`);
+
+  //     for (const file of htmlFiles) {
+  //       let content = fs.readFileSync(file, 'utf-8');
+
+  //       // 比對所有 <link rel="stylesheet" href="..."> 的樣式
+  //       content = content.replace(
+  //         /<link\s+rel="stylesheet"\s+href="([^"]+\.css)"[^>]*?>/g,
+  //         (match, href) => {
+  //           const cssPath = path.join(distDir, href);
+  //           if (fs.existsSync(cssPath)) {
+  //             return match; // 檔案存在，不刪
+  //           } else {
+  //             console.warn(`❌ 移除無效樣式連結：${href}`)
+  //             return ''; // 檔案不存在，移除這段 <link>
+  //           }
+  //         }
+  //       )
+
+  //       fs.writeFileSync(file, content, 'utf-8');
+  //     }
   //   }
   // },
   
@@ -168,7 +184,7 @@ export default defineNuxtConfig({
   },
   build: {
     transpile: ['vue', 'vue-router', 'nuxt', 'estree-walker'],
-    // extractCSS: true, // 啟用 CSS 提取
+    extractCSS: false,
     filenames: {
       app: () => 'app.js',
       chunk: () => '[name].js', // 避免 chunk 有 hash

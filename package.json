@@ -6,6 +6,7 @@
     "build": "nuxt build",
     "dev": "nuxt dev",
     "ssg": "nuxt generate",
+    "postssg": "node scripts/clean-missing-css-links.cjs",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
   },

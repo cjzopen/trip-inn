@@ -17,14 +17,19 @@ for (const file of htmlFiles) {
   const updated = content.replace(
     /<link\s+rel="stylesheet"\s+href="([^"]+\.css)"[^>]*?>/g,
     (match, href) => {
+      // 如果是來自外部的 CSS，則不刪除
+      if (href.startsWith('http')) {
+        return match
+      }
+  
       const cleanHref = href.replace(BASE_PATH_PREFIX, '')
       const filePath = path.join(BASE_DIR, cleanHref)
-
+  
       if (!fs.existsSync(filePath)) {
         console.log(`❌ 移除不存在的 CSS: ${href}`)
         return ''
       }
-
+  
       return match
     }
   )

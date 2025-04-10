@@ -130,7 +130,7 @@ useServerHead({
     { rel: 'stylesheet', href: `${domainUrl}/lib/leaflet/leaflet.1.9.4.css` },
     { rel: 'stylesheet', href: `${domainUrl}/lib/leaflet/markercluster.1.5.3.css` },
     { rel: 'stylesheet', href: `${domainUrl}/lib/leaflet/markercluster.default.1.5.3.css` },
-    { rel: 'stylesheet', href: `${domainUrl}/assets/css/trip.css` },
+    { rel: 'stylesheet', href: `${domainUrl}/css/trip.css` },
   ],
   script: [
     {

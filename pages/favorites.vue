@@ -10,14 +10,24 @@
         <button @click="filterType('scenic')" class="bg-green-500 text-white px-4 py-2 rounded">景點</button>
       </div>
       <div v-if="filteredFavorites.length" class="p-4">
-        <ul>
-          <li v-for="(favorite, index) in filteredFavorites" :key="index">
+        <details class="bg-green-200/10 rounded-sm p-3 mb-3" v-for="(favorite, index) in filteredFavorites" :key="favorite.Id">
+          <summary class="flex items-center gap-2 text-xl relative pr-4">
+            <svg role="presentation" aria-hidden="true" v-if="favorite.type === 'hotel'" class="h-5 w-5 text-blue-500">
+              <use href="#camp"></use>
+            </svg>
+            <svg role="presentation" aria-hidden="true" v-else class="h-5 w-5 text-green-500">
+              <use href="#pin"></use>
+            </svg>
+            <span>{{ favorite.Name }}</span>
+            <button @click.stop="removeFavorite(favorite, index)" class="absolute right-0 top-0 cursor-pointer px-1 text-rose-500 hover:text-red-700" title="刪除">
+              &times;
+            </button>
+          </summary>
+          <div class="pt-2">
             <p><strong>類型：</strong>{{ favorite.type }}</p>
-            <p><strong>名稱：</strong>{{ favorite.Name }}</p>
             <p><strong>地址：</strong>{{ favorite.Add }}</p>
-            <hr class="my-2" />
-          </li>
-        </ul>
+          </div>
+        </details>
       </div>
       <div v-else>
         <p class="text-center text-white">目前沒有收藏的項目。</p>
@@ -29,7 +39,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, nextTick } from 'vue';
 import Menu from '~/components/Menu.vue';
 import Footer from '~/components/Footer.vue';
 
@@ -45,6 +55,28 @@ onMounted(() => {
 const filterType = (type) => {
   selectedType.value = type;
   filteredFavorites.value = favorites.value.filter(favorite => favorite.type === type);
+};
+
+const removeFavorite = (favorite, index) => {
+  // 從 localStorage 中刪除資料
+  const storedFavorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+  const updatedFavorites = storedFavorites.filter(item => !(item.type === favorite.type && item.Id === favorite.Id));
+  localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+
+  // details 消失
+  const detailsElement = document.querySelectorAll('details')[index];
+  if (detailsElement) {
+    detailsElement.style.transition = 'height 0.3s ease, opacity 0.3s ease';
+    detailsElement.style.height = `${detailsElement.offsetHeight}px`;
+    detailsElement.style.opacity = '1';
+    nextTick(() => {
+      detailsElement.style.height = '0';
+      detailsElement.style.opacity = '0';
+    });
+    setTimeout(() => {
+      filteredFavorites.value.splice(index, 1);
+    }, 300);
+  }
 };
 
 const colors = ['#583C87', '#E45A84', '#FFACAC'];
@@ -105,5 +137,15 @@ h1 {
   100% {
     transform: translate3d(0, 0, 1px) rotate(360deg);
   }
+}
+details {
+  overflow: hidden;
+}
+summary {
+  cursor: pointer;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 </style>

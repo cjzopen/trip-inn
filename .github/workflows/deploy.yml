@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - gh-pages
+      - main
 
 jobs:
   build:
@@ -21,22 +21,13 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    # - name: Remove existing docs folder
-    #   run: rm -rf docs
-
     - name: Generate dist folder
       run: npm run ssg
-
-    # - name: Rename dist to docs
-    #   run: mv dist docs
-
-    # - name: Create .nojekyll file
-    #   run: touch .output/public/.nojekyll
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         publish_dir: ./docs
-        # external_repository: cjzopen/trip-inn
-        # publish_branch: main
+        external_repository: cjzopen/trip-inn
+        publish_branch: main

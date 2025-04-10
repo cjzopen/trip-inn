@@ -95,10 +95,10 @@ import { useRoute, useRouter } from 'vue-router';
 import { useServerHead } from '#imports';
 // import { Swiper, SwiperSlide } from 'swiper/vue';
 // import 'swiper/swiper-bundle.css';
-// import '~/src/lib/leaflet/leaflet.1.9.4.css';
-// import '~/src/lib/leaflet/markercluster.1.5.3.css';
-// import '~/src/lib/leaflet/markercluster.default.1.5.3.css';
-// import '~/public/css/trip.css';
+import '~/src/lib/leaflet/leaflet.1.9.4.css';
+import '~/src/lib/leaflet/markercluster.1.5.3.css';
+import '~/src/lib/leaflet/markercluster.default.1.5.3.css';
+import '~/src/assets/css/trip.css';
 
 import Menu from '~/components/Menu.vue';
 import Footer from '~/components/Footer.vue';
@@ -127,10 +127,10 @@ useServerHead({
   ],
   link: [
     { rel: 'canonical', href: `${domainUrl}/taiwan` },
-    { rel: 'stylesheet', href: `${domainUrl}/lib/leaflet/leaflet.1.9.4.css` },
-    { rel: 'stylesheet', href: `${domainUrl}/lib/leaflet/markercluster.1.5.3.css` },
-    { rel: 'stylesheet', href: `${domainUrl}/lib/leaflet/markercluster.default.1.5.3.css` },
-    { rel: 'stylesheet', href: `${domainUrl}/css/trip.css` },
+    // { rel: 'stylesheet', href: `${domainUrl}/lib/leaflet/leaflet.1.9.4.css` },
+    // { rel: 'stylesheet', href: `${domainUrl}/lib/leaflet/markercluster.1.5.3.css` },
+    // { rel: 'stylesheet', href: `${domainUrl}/lib/leaflet/markercluster.default.1.5.3.css` },
+    // { rel: 'stylesheet', href: `${domainUrl}/css/trip.css` },
   ],
   script: [
     {

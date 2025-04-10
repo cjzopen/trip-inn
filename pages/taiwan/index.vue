@@ -19,16 +19,14 @@
         </div>
         <div>
           <ul class="grid justify-self-center grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3 gap-4">
-            <client-only>
-              <Card v-for="hotel in displayHotels" :key="hotel.Id" :item="hotel" @click="showDetails(hotel, 'hotel')">
-                <div class="title text-2xl font-bold mb-2">{{ hotel.Name }}</div>
-                <p class="min-h-[48px]">{{ hotel.Add }}</p>
-                <ul>
-                  <li>共有 {{ hotel.TotalNumberofRooms }} 間房間。</li>
-                  <li v-html="getPriceHtml(hotel)"></li>
-                </ul>
-              </Card>
-            </client-only>
+            <Card v-for="hotel in displayHotels" :key="hotel.Id" :item="hotel" @click="showDetails(hotel, 'hotel')">
+              <div class="title text-2xl font-bold mb-2">{{ hotel.Name }}</div>
+              <p class="min-h-[48px]">{{ hotel.Add }}</p>
+              <ul>
+                <li>共有 {{ hotel.TotalNumberofRooms }} 間房間。</li>
+                <li v-html="getPriceHtml(hotel)"></li>
+              </ul>
+            </Card>
           </ul>
         </div>
       </div>
@@ -45,12 +43,10 @@
         </div>
         <div>
           <ul class="grid justify-self-center grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3 gap-4">
-            <client-only>
-              <Card v-for="scenic in displayScenics" :key="scenic.Id" :item="scenic" @click="showDetails(scenic, 'scenic')">
-                <div class="title text-xl font-bold mb-2">{{ scenic.Name }}</div>
-                <p class="min-h-[48px]">{{ scenic.Add }}</p>
-              </Card>
-            </client-only>
+            <Card v-for="scenic in displayScenics" :key="scenic.Id" :item="scenic" @click="showDetails(scenic, 'scenic')">
+              <div class="title text-xl font-bold mb-2">{{ scenic.Name }}</div>
+              <p class="min-h-[48px]">{{ scenic.Add }}</p>
+            </Card>
           </ul>
         </div>
       </div>
@@ -88,9 +84,9 @@
       </ul> -->
     </Modal>
   
-  <client-only>
+  <!-- <client-only> -->
     <Loading :loading="loading" />
-  </client-only>
+  <!-- </client-only> -->
 </template>
 
 <script setup>
@@ -99,9 +95,9 @@ import { useRoute, useRouter } from 'vue-router';
 import { useServerHead } from '#imports';
 // import { Swiper, SwiperSlide } from 'swiper/vue';
 // import 'swiper/swiper-bundle.css';
-import '~/src/lib/leaflet/leaflet.1.9.4.css';
-import '~/src/lib/leaflet/markercluster.1.5.3.css';
-import '~/src/lib/leaflet/markercluster.default.1.5.3.css';
+// import '~/src/lib/leaflet/leaflet.1.9.4.css';
+// import '~/src/lib/leaflet/markercluster.1.5.3.css';
+// import '~/src/lib/leaflet/markercluster.default.1.5.3.css';
 // import '~/public/css/trip.css';
 
 import Menu from '~/components/Menu.vue';
@@ -131,6 +127,10 @@ useServerHead({
   ],
   link: [
     { rel: 'canonical', href: `${domainUrl}/taiwan` },
+    { rel: 'stylesheet', href: '~/src/lib/leaflet/leaflet.1.9.4.css' },
+    { rel: 'stylesheet', href: '~/src/lib/leaflet/markercluster.1.5.3.css' },
+    { rel: 'stylesheet', href: '~/src/lib/leaflet/markercluster.default.1.5.3.css' },
+    { rel: 'stylesheet', href: `~/src/assets/css/trip.css` },
   ],
   script: [
     {

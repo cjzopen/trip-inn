@@ -1,6 +1,30 @@
-<!DOCTYPE html><html  lang="zh-Hant-TW"><head><meta charset="utf-8">
+<!DOCTYPE html><html lang="zh-Hant-TW"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>旅遊小站</title>
+<!-- 
+  GitHub Pages 404 Redirect for SPA
+  This page handles 404 errors by redirecting to the app's home page
+  while preserving the original route for client-side routing.
+  
+  When user tries to access /trip-inn/taiwan directly:
+  1. GitHub Pages returns this 404.html
+  2. JavaScript redirects to /trip-inn/#/taiwan
+  3. Nuxt router handles the hash-based route
+-->
+<script>
+  // Get the requested path (everything after the domain)
+  const path = window.location.pathname;
+  const baseURL = '/trip-inn';
+  
+  // Extract the route from the path
+  // e.g., /trip-inn/taiwan -> /taiwan
+  if (path.startsWith(baseURL + '/') && !path.includes('_nuxt')) {
+    const route = path.slice(baseURL.length);
+    // Redirect to home with the route preserved in hash
+    // This allows Nuxt to handle the routing on the client side
+    window.location.replace(baseURL + '/#' + route);
+  }
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <script src="https://www.googletagmanager.com/gtag/js?id=G-DJDQTXG7GS" async></script>
@@ -35,5 +59,5 @@
           </script>
 <noscript>此網頁需要支援 JavaScript 才能正確運行，請先至你的瀏覽器設定中開啟 JavaScript。</noscript>
 <script type="module" src="/trip-inn/_nuxt/pm4d_fiS.js" crossorigin></script>
-<script id="unhead:payload" type="application/json">{"title":"旅遊小站"}</script></head><body><div id="__nuxt"></div><div id="teleports"></div><script>window.__NUXT_SITE_CONFIG__={_priority:{name:-10,env:-15,url:-3},env:"production",name:"nuxt-app",url:"https:\u002F\u002Fcjzopen.github.io\u002Ftrip-inn"}</script><script type="application/json" data-nuxt-data="nuxt-app" data-ssr="false" id="__NUXT_DATA__">[{"prerenderedAt":1,"serverRendered":2},1744270446884,false]</script>
-<script>window.__NUXT__={};window.__NUXT__.config={public:{domainUrl:"https://cjzopen.github.io/trip-inn"},app:{baseURL:"/trip-inn/",buildId:"9eb4aff0-1ce3-4e5f-91fe-f942b8b01581",buildAssetsDir:"/_nuxt/",cdnURL:""}}</script></body></html>
+<script id="unhead:payload" type="application/json">{"title":"旅遊小站"}</script></head><body><div id="__nuxt"></div><div id="teleports"></div><script>window.__NUXT_SITE_CONFIG__={_priority:{name:-10,env:-15,url:-3},env:"production",name:"nuxt-app",url:"https:\u002F\u002Fcjzopen.github.io"}</script><script type="application/json" data-nuxt-data="nuxt-app" data-ssr="false" id="__NUXT_DATA__">[{"prerenderedAt":1,"serverRendered":2},1764306329678,false]</script>
+<script>window.__NUXT__={};window.__NUXT__.config={public:{domainUrl:"https://cjzopen.github.io/trip-inn"},app:{baseURL:"/trip-inn/",buildId:"b6ebed44-4711-46a2-ba39-5ee619b29ee9",buildAssetsDir:"/_nuxt/",cdnURL:""}}</script></body></html>

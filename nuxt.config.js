@@ -225,5 +225,13 @@ export default defineNuxtConfig({
   // },
   target: 'static',
 
+  // Router configuration for GitHub Pages with base path
+  // Using hash mode to enable client-side SPA routing without server rewrites
+  router: {
+    options: {
+      hashMode: true,
+    }
+  },
+
   compatibilityDate: '2025-03-10'
 });

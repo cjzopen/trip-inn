@@ -1,7 +1,7 @@
 <template>
   <nav id="nav">
     <ul>
-      <li><nuxt-link to="/">Home</nuxt-link></li>
+      <!-- <li><nuxt-link to="/">Home</nuxt-link></li> -->
       <li><nuxt-link to="/taiwan">Taiwan</nuxt-link></li>
       <li class="ml-auto"><nuxt-link to="/favorites">我的收藏</nuxt-link></li>
     </ul>

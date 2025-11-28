@@ -1,17 +1,21 @@
-name: Deploy Nuxt SSG to GitHub Pages
+name: Build and publish SSG to `docs/` on main
 
 on:
   push:
     branches: [ main ]
 
 jobs:
-  build-and-deploy:
+  build-and-update-docs:
+    # skip when commit message contains [skip ci] to avoid a push loop
+    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          # allow the action to push back to the same repository
+          persist-credentials: true
 
       - name: Use Node.js
         uses: actions/setup-node@v4
@@ -24,15 +28,14 @@ jobs:
       - name: Generate static site (SSG)
         run: npm run ssg
 
-      - name: Deploy to gh-pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Commit generated `docs/` to main
+        uses: EndBug/add-and-commit@v9
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./.output/public
-          publish_branch: gh-pages
-          # optional: uncomment to set a custom commit author
-          # user_name: 'github-actions[bot]'
-          # user_email: '41898282+github-actions[bot]@users.noreply.github.com'
+          author_name: github-actions[bot]
+          author_email: 41898282+github-actions[bot]@users.noreply.github.com
+          message: "chore: update docs (SSG) [skip ci]"
+          add: 'docs'
+          push: true
 name: Deploy to GitHub Pages
 
 on:

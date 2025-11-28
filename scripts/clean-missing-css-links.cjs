@@ -3,13 +3,13 @@ const path = require('path')
 const glob = require('glob')
 const { execSync } = require('child_process')
 
-const DIST_DIR = path.resolve('dist')
 const DOCS_DIR = path.resolve('docs')
 
-const BASE_DIR = path.join(__dirname, '..', '.output', 'public')
+// 生成輸出目錄（Nuxt 3 的靜態輸出）
+const BUILD_DIR = path.join(__dirname, '..', '.output', 'public')
 const BASE_PATH_PREFIX = '/trip-inn' // 你的 router base
 
-const htmlFiles = glob.sync(`${BASE_DIR}/**/*.html`)
+const htmlFiles = glob.sync(`${BUILD_DIR}/**/*.html`)
 
 for (const file of htmlFiles) {
   let content = fs.readFileSync(file, 'utf-8')
@@ -23,7 +23,7 @@ for (const file of htmlFiles) {
       }
   
       const cleanHref = href.replace(BASE_PATH_PREFIX, '')
-      const filePath = path.join(BASE_DIR, cleanHref)
+      const filePath = path.join(BUILD_DIR, cleanHref)
   
       if (!fs.existsSync(filePath)) {
         console.log(`❌ 移除不存在的 CSS: ${href}`)
@@ -44,9 +44,9 @@ if (fs.existsSync(DOCS_DIR)) {
   fs.rmSync(DOCS_DIR, { recursive: true, force: true })
 }
 
-// 移動 dist/ 到 docs/
-console.log('📦 Moving dist/ to docs/')
-fs.renameSync(DIST_DIR, DOCS_DIR)
+// 移動 build 輸出到 docs/
+console.log('📦 Moving build output to docs/')
+fs.renameSync(BUILD_DIR, DOCS_DIR)
 
 // 建立 .nojekyll 檔
 console.log('📄 Creating .nojekyll file')

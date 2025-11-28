@@ -8,7 +8,10 @@ import glob from 'glob';
 
 const defaultTitle = '旅遊小站';
 const defaultDescription = '用景點找尋附近合適的旅宿，或是用住宿地點查看附近有哪些知名景點。';
+// 完整的網站 URL (包含 repo path)，用於生成 head 中的絕對資源連結
 const domainUrl = 'https://cjzopen.github.io/trip-inn';
+// 主站 URL (不含 repo path)，用於 Nuxt site config (不要包含 path)
+const siteUrl = 'https://cjzopen.github.io';
 const ver = '01';
 // const defaultcanonical = `${domainUrl}${useRoute().path}`;
 
@@ -199,8 +202,9 @@ export default defineNuxtConfig({
     }
   },
   modules: ['@nuxtjs/sitemap'],
+  // Nuxt site config 要求不包含 path 在 url 中
   site: {
-    url: domainUrl
+    url: siteUrl
   },
   sitemap: {
     xsl: false,

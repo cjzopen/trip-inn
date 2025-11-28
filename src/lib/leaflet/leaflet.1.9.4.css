@@ -356,12 +356,13 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	border-radius: 5px;
 	}
 .leaflet-control-layers-toggle {
-	background-image: url(images/layers.png);
+	/* 使用本地 images（部署於 /trip-inn/lib/leaflet/images）以避免依賴 CDN */
+	background-image: url('/trip-inn/lib/leaflet/images/layers.png');
 	width: 36px;
 	height: 36px;
 	}
 .leaflet-retina .leaflet-control-layers-toggle {
-	background-image: url(images/layers-2x.png);
+	background-image: url('/trip-inn/lib/leaflet/images/layers-2x.png');
 	background-size: 26px 26px;
 	}
 .leaflet-touch .leaflet-control-layers-toggle {
@@ -404,7 +405,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
 /* Default icon URLs */
 .leaflet-default-icon-path { /* used only in path-guessing heuristic, see L.Icon.Default */
-	background-image: url(images/marker-icon.png);
+	/* 使用本地 images（部署於 /trip-inn/lib/leaflet/images） */
+	background-image: url('/trip-inn/lib/leaflet/images/marker-icon.png');
 	}
 
 

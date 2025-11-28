@@ -1,4 +1,0 @@
-const favorites_vue_vue_type_style_index_0_scoped_d30aa495_lang = "main[data-v-d30aa495]{clip-path:inset(0);overflow:hidden;padding:2rem;position:relative}main[data-v-d30aa495] :not(.color-ball){z-index:1}h1[data-v-d30aa495]{background:linear-gradient(90deg,#9796f0,#fbc7d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:inline-block}.color-ball[data-v-d30aa495]{animation-iteration-count:infinite;animation-timing-function:linear;backface-visibility:hidden;border-radius:20vmin;height:20vmin;position:absolute;width:20vmin;z-index:0}@keyframes move-d30aa495{to{transform:translateZ(1px) rotate(1turn)}}details[data-v-d30aa495]{overflow:hidden}summary[data-v-d30aa495]{align-items:center;cursor:pointer;display:flex;font-weight:700;gap:.5rem}";
-
-export { favorites_vue_vue_type_style_index_0_scoped_d30aa495_lang as f };
-//# sourceMappingURL=favorites-styles-1.mjs.mjs.map

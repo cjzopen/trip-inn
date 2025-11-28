@@ -3,38 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>旅遊小站</title>
-  <script>
-    // GitHub Pages 404 Redirect for SPA
-    // This handles 404 errors by redirecting to the app's home page
-    // while preserving the original route for client-side routing.
-    
-    // Get the requested path
-    const pathname = window.location.pathname;
-    const baseURL = '/trip-inn';
-    
-    // Check if this is a route request (not a static asset)
-    // and redirect to hash-based routing
-    if (pathname.startsWith(baseURL + '/') && 
-        !pathname.includes('_nuxt') && 
-        !pathname.includes('.') &&
-        pathname !== baseURL && 
-        pathname !== baseURL + '/') {
-      
-      // Extract the route from the path
-      // e.g., /trip-inn/taiwan -> /taiwan
-      const route = pathname.slice(baseURL.length);
-      
-      // Redirect to home with the route preserved in hash
-      // This allows Nuxt to handle the routing on the client side
-      window.location.replace(baseURL + '/#' + route);
-    } else {
-      // If it's the home route or a static asset, redirect to home
-      window.location.replace(baseURL + '/');
-    }
-  </script>
+  <title>找不到頁面（404） - 旅遊小站</title>
 </head>
 <body>
-  <p>重定向中...</p>
+  <h1>找不到頁面（404）</h1>
+  <p>抱歉，您要的頁面不存在或已移動。</p>
+  <p>請從首頁開始： <a href="/trip-inn/">回到首頁</a></p>
 </body>
 </html>
